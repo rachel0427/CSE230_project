@@ -9,7 +9,7 @@ Our goal is to build a command-line version of hangman using the brick library. 
 
 ### Interface Design
 We will start with a welcome screen where users select a difficulty level and start the game by clicking a start button.
-The main game interface will consist of two sides. The left side will contain the graphical interface of a stick figure being hanged. The right side will contain empty squares indicating the word to guess, and a keyboard that allows the player to select letters. 
+The main game interface will consist of two sides. The left side will contain the graphical interface of a hangman figure tracking the process of the user’s mistakes so far. The right side will contain empty squares as placeholders for unknown characters and display known characters at corresponding places and in the bottom, we plan a keyboard component that allows the player to select letters. 
 
 ### Possibly adding network
-Our reach goal for this project is to enable multi-user experience and allow two human users to play simultaneously on different machines. 
+Our reach goal for this project is to implement multi-user experience, enabling interactive user experience across different machines. 
