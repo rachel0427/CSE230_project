@@ -12,14 +12,19 @@ The result of the user's choices will affect several criterias, including the he
 
 #### The Weather System: 
 On each game day, a type of weather will be randomly generated. Depending on the weather, your health, hunger, and thirst will decrease at different rates.
-Sunny day – your thirst bar will decrease faster
-Rainy day – your hunger bar will decrease faster
-Stormy day – your health bar will decrease faster
+
+  Sunny day – your thirst bar will decrease faster
+
+  Rainy day – your hunger bar will decrease faster
+
+  Stormy day – your health bar will decrease faster
 
 #### Examples of Activities 
 (X and Y below are Random Variables that follow some predetermined distribution)
-Picking Coconuts (Cost: 2 time blocks. Reward: +X to hunger bar, +Y to thirst bar)
-Fishing (Cost: 2 time blocks. Reward: 1-3 fish, +X to hunger bar per fish, +Y to health bar per fish)
+
+  Picking Coconuts (Cost: 2 time blocks. Reward: +X to hunger bar, +Y to thirst bar)
+
+  Fishing (Cost: 2 time blocks. Reward: 1-3 fish, +X to hunger bar per fish, +Y to health bar per fish)
 
 #### Interface Design
 The UI will display the bars of survival and a brief prompt that leads the user’s choices, 3-4 text based choices or visual choices (eg. coconut, fish,object icons) will be displayed in the center of the interface. We also plan to have some decorative arts to make the interface more realistic and engaging.
