@@ -1,15 +1,25 @@
 # CSE230 Final Project
 #### Group Members: Ruoqi(Rachel) Yang, Ruichun Yang, Angela Chen, Maggie Zhao
 
-### Rules:
-Hangman is a 2-player game where Player 1 thinks of a word that Player 2 tries to guess. The screen will display an underscore for each letter in the word, and Player 2 will guess letters in succession. If the guessed letter is contained in the word, the letter will appear in the correct slot(s). If the guessed letter is not the word, one body part will be added to the hangman figure. If the word is not guessed before all body parts are drawn, Player 2 loses the game. Otherwise, Player 2 wins.
+Our goal is to create a survival game. You are stranded on an island. Your goal is to survive for 10 days so that you can be rescued.
 
-### Our project:
-Our goal is to build a command-line version of hangman using the brick library. We will begin by implementing a one-player version of hangman, where the computer (Player 1) draws a word from a word-base of a user-selected difficulty, and the user (Player 2) tries to guess the word. Next, we will implement a two-player version of hangman.
+#### Rules of the game:
+The Time System: Each day has 5 time blocks, and you can choose to do different activities during those time blocks. The user will be given a choice to do some activities (from a wide range of predefined options) that will benefit their survival. Some activities may have probabilistic results.
 
-### Interface Design
-We will start with a welcome screen where users select a difficulty level and start the game by clicking a start button.
-The main game interface will consist of two sides. The left side will contain the graphical interface of a hangman figure tracking the process of the user’s mistakes so far. The right side will contain empty squares as placeholders for unknown characters and display known characters at corresponding places. In the bottom, we plan a keyboard component that allows the player to select letters. 
+#### Survival Criteria: 
+The result of the user's choices will affect several criterias, including the health bar, the hunger bar, and the thirst bar. The values of these bars change in accordance to the activities the player chooses, time elapses, and the weather. If either of the hunger or thirst bar depletes, the player’s health will drop dramatically each time block. Once the health value reaches 0, the game ends.
 
-### Possibly adding network
-Our reach goal for this project is to implement multi-user experience, enabling interactive user experience across different machines. 
+
+#### The Weather System: 
+On each game day, a type of weather will be randomly generated. Depending on the weather, your health, hunger, and thirst will decrease at different rates.
+Sunny day – your thirst bar will decrease faster
+Rainy day – your hunger bar will decrease faster
+Stormy day – your health bar will decrease faster
+
+#### Examples of Activities 
+(X and Y below are Random Variables that follow some predetermined distribution)
+Picking Coconuts (Cost: 2 time blocks. Reward: +X to hunger bar, +Y to thirst bar)
+Fishing (Cost: 2 time blocks. Reward: 1-3 fish, +X to hunger bar per fish, +Y to health bar per fish)
+
+#### Interface Design
+The UI will display the bars of survival and a brief prompt that leads the user’s choices, 3-4 text based choices or visual choices (eg. coconut, fish,object icons) will be displayed in the center of the interface. We also plan to have some decorative arts to make the interface more realistic and engaging.
