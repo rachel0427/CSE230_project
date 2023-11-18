@@ -20,11 +20,12 @@ On each game day, a type of weather will be randomly generated. Depending on the
   Stormy day – health bar decreases faster
 
 #### Examples of Activities 
-(X and Y below are Random Variables that follow some predetermined distribution)
 
   Picking Coconuts (Cost: 2 time blocks. Reward: +5 to hunger bar, +10 to thirst bar)
 
   Fishing (Cost: 2 time blocks. Reward: 1-3 fish, +5 to hunger bar per fish, +5 to health bar per fish)
+
+  (Some activities may yield variable rewards according to a predetermined probability distribution.)
 
 ### Interface Design
 The UI will display the bars of survival and a brief prompt that leads the player’s choices, 3-4 text based choices or visual choices (eg. coconut, fish,object icons) will be displayed in the center of the interface. We also plan to have some decorative arts to make the interface more realistic and engaging.
