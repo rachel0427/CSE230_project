@@ -1,0 +1,7 @@
+.stack-work/dist/x86_64-linux/Cabal-3.6.3.0/setup-config
+.stack-work/stack.sqlite3
+dist-newstyle/cache/solver-plan
+dist-newstyle/sdist/brick-example-0.1.0.0.tar.gz
+dist-newstyle/cache/compiler
+dist-newstyle/cache/elaborated-plan
+dist-newstyle/cache/improved-plan
