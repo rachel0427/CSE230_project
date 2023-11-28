@@ -1,3 +1,10 @@
 .vscode/
 
 *discard.hs
+
+
+dist-newstyle/cache/solver-plan
+dist-newstyle/sdist/brick-example-0.1.0.0.tar.gz
+dist-newstyle/cache/compiler
+dist-newstyle/cache/elaborated-plan
+dist-newstyle/cache/improved-plan

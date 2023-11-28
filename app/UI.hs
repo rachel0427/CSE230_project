@@ -8,6 +8,7 @@ import Brick.Widgets.Border.Style (unicode)
 import Control.Monad (void)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
+import qualified Game as G
 
 data UIState = Menu | StartGame deriving (Show, Eq)
 
@@ -24,6 +25,12 @@ app = App
     -- , appAttrMap      = const $ attrMap defAttr []
     , appAttrMap = const $ attrMap Graphics.Vty.defAttr []
     }
+
+start :: IO()
+start = do
+    initialState <- G.initializeGame
+    return ()
+
 
 drawUI :: UIState -> [Widget Name]
 drawUI Menu = [ui]
@@ -44,7 +51,13 @@ uiStartGame =
     center $
     borderWithLabel (str "New Game Page") $
     hCenter $
-    vBox [str "Start new game!"]
+    vBox [ str "Start new game!"
+         , str ("Days survived: " ++ show (G.daysSurvived initialState)) -- TODO: How to get initialState to be in scope here?
+         , str ("Health: " ++ show (G.healthBar initialState))
+         , str ("Hunger: " ++ show (G.hungerBar initialState))
+         , str ("Thirst: " ++ show (G.thirstBar initialState))
+         ]
+
 
 handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
 handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = continue StartGame
