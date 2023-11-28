@@ -1,6 +1,10 @@
 # CSE230 Final Project
 #### Group Members: Ruoqi(Rachel) Yang, Ruichun Yang, Angela Chen, Maggie Zhao
 
+### How to execute the program
+$ stack build
+$ stack exec survival-game
+
 Our goal is to create a survival game. You are stranded on an island. Your goal is to survive for 10 days so that you can be rescued.
 
 ### Rules of the game:
