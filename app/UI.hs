@@ -1,119 +1,52 @@
-{-# LANGUAGE OverloadedStrings #-}
-
+-- UI.hs
 module UI where
 
-import Graphics.Vty
 import Brick
-import Brick.Widgets.Border (border)
-import Brick.Widgets.Center (center, vCenter)
-import Brick.Widgets.Core (str)
-import Brick.Widgets.Core ( (<+>) )
+import Brick.Widgets.Center (center, hCenter)
+import Brick.Widgets.Border (border, borderWithLabel)
+import Brick.Widgets.Border.Style (unicode)
+import Control.Monad (void)
+import Graphics.Vty
+import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
 
-import qualified Game as Game
+data UIState = Menu | StartGame deriving (Show, Eq)
 
--- | Custom data type to represent the UI state
-data UIState = UIState
-    { game   :: Game.GameState
-    , screen :: Screen
-    }
+data CustomEvent = StartNewGame | ExitGame deriving (Show, Eq)
 
--- | Custom data type to represent the different screens in the UI
-data Screen = MainMenu | NewGame
+type Name = ()
 
--- | Custom data type to represent the UI events
-data UIEvent = UINewGame | UIExit
-
--- | Define the Brick application
-app :: App UIState UIEvent
+app :: App UIState CustomEvent Name
 app = App
     { appDraw         = drawUI
-    , appChooseCursor = neverShowCursor
+    , appChooseCursor = showFirstCursor
     , appHandleEvent  = handleEvent
     , appStartEvent   = return
-    , appAttrMap      = const $ attrMap defAttr []
+    -- , appAttrMap      = const $ attrMap defAttr []
+    , appAttrMap = const $ attrMap Graphics.Vty.defAttr []
     }
 
--- | Define the initial game state and UI state
-initialGameState :: Game.GameState
-initialGameState = Game.GameState 0 100 100 100 5 Game.Sunny
+drawUI :: UIState -> [Widget Name]
+drawUI Menu = [ui]
+drawUI StartGame = [uiStartGame]
 
-initialUIState :: UIState
-initialUIState = UIState initialGameState MainMenu
+ui :: Widget Name
+ui =
+    center $
+    borderWithLabel (str "Main Menu") $
+    hCenter $
+    vBox
+        [ str "Press 's' to start a new game."
+        , str "Press 'q' to exit the game."
+        ]
 
--- | Draw the UI based on the current UI state
-drawUI :: UIState -> [Widget UIState]
-drawUI uiState =
-    case screen uiState of
-        MainMenu -> [center mainMenuWidget]
-        NewGame  -> [center newGameWidget]
+uiStartGame :: Widget Name
+uiStartGame =
+    center $
+    borderWithLabel (str "New Game Page") $
+    hCenter $
+    vBox [str "Start new game!"]
 
--- | Define the main menu widget with buttons
-mainMenuWidget :: Widget UIState
-mainMenuWidget =
-    vBox [str "Survival Game"
-         , str " "
-         , button "Start New Game" UINewGame
-         , str " "
-         , button "Exit" UIExit
-         ]
-
--- | Define the new game screen widget
-newGameWidget :: Widget UIState
-newGameWidget =
-    vBox [str "New Game Screen"
-         , str " "
-         , str "Press 'q' to go back to the main menu."
-         ]
-
--- | Define a button with a given label and event
-button :: String -> UIEvent -> Widget UIState
-button label event = clickable (const event) $ hCenter $ str ("[" <> label <> "]")
-
--- | Handle events based on the current UI state
-handleEvent :: UIState -> BrickEvent UIState UIEvent -> EventM UIState (Next UIState)
-handleEvent uiState (VtyEvent (EvKey KEnter [])) = handleEnterKey uiState
-handleEvent uiState (VtyEvent (EvKey (KChar 'q') [])) = handleQKey uiState
-handleEvent uiState _ = continue uiState
-
--- | Handle 'Enter' key events
-handleEnterKey :: UIState -> EventM UIState (Next UIState)
-handleEnterKey uiState =
-    case screen uiState of
-        MainMenu -> handleMainMenuEnter uiState
-        NewGame  -> continue uiState
-
--- | Handle 'q' key events
-handleQKey :: UIState -> EventM UIState (Next UIState)
-handleQKey uiState =
-    case screen uiState of
-        NewGame -> continue uiState { screen = MainMenu }
-        _       -> halt uiState
-
--- | Handle 'Enter' key events on the main menu
-handleMainMenuEnter :: UIState -> EventM UIState (Next UIState)
-handleMainMenuEnter uiState =
-    case screen uiState of
-        MainMenu -> handleMainMenuSelection uiState
-        _        -> continue uiState
-
--- | Handle main menu item selection
-handleMainMenuSelection :: UIState -> EventM UIState (Next UIState)
-handleMainMenuSelection uiState =
-    case getSelectedEvent (currentAttrName $ overrideAttr uiState) of
-        Just UINewGame -> continue uiState { screen = NewGame }
-        Just UIExit     -> halt uiState
-        _               -> continue uiState
-
--- | Get the selected event based on the current attribute name
-getSelectedEvent :: AttrName -> Maybe UIEvent
-getSelectedEvent attrName
-    | attrName == "selected" = Just UINewGame
-    | attrName == "normal"   = Just UIExit
-    | otherwise              = Nothing
-
--- | Override the attribute based on the current UI state
-overrideAttr :: UIState -> AttrName
-overrideAttr uiState =
-    case screen uiState of
-        MainMenu -> "selected"
-        _        -> "normal"
+handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
+handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = continue StartGame
+handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
+handleEvent _ _ = continue Menu

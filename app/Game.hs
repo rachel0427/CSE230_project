@@ -24,7 +24,7 @@ initializeGame = do
 -- | Get a random weather for the game
 getRandomWeather :: IO Weather
 getRandomWeather = do
-    rand <- randomRIO (1, 3)
+    rand <- randomRIO (1 :: Int, 3 :: Int)
     case rand of
         1 -> return Sunny
         2 -> return Rainy
