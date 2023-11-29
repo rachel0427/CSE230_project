@@ -9,15 +9,9 @@ import Control.Monad (void)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
 
--- import Types
+import Types
 
-data UIState = Menu | StartGame
-  { hunger :: Int
-  , health :: Int
---   , weather :: Weather
-  , weather :: Int
-  , date :: Int
-  } deriving (Show, Eq)
+data UIState = Menu | StartGame PlayStatus deriving (Show, Eq)
 
 data CustomEvent = StartNewGame | ExitGame deriving (Show, Eq)
 
@@ -33,10 +27,7 @@ app = App
     }
 
 initNewGame :: UIState
-initNewGame = StartGame {hunger = 0
-                        , health = 100
-                        , weather = 0
-                        , date = 1}
+initNewGame = StartGame PlayStatus {hunger = 0, thirsty = 0, health = 100, weather = Sunny, date = 1}
 
 drawUI :: UIState -> [Widget Name]
 drawUI Menu = [ui]
