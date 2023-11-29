@@ -1,9 +1,9 @@
-module Game where
+module Game (module Game) where
 
 -- import Activity (Activity, activityEffects)
 import Activity
-import System.Random (randomRIO)
 import Data.Map as M
+import System.Random (randomRIO)
 import Types
 
 -- | Custom data type to represent the game state
@@ -112,3 +112,30 @@ assignActivitiesToKeys = do
             ('D', Random randomActivity)
           ]
   return activityMap
+
+-- Function to update PlayStatus based on the user's input
+updatePlayStatusWithChar :: M.Map Char Activity -> Char -> PlayStatus -> IO PlayStatus
+updatePlayStatusWithChar activityMap char playStatus =
+  case M.lookup char activityMap of
+    Just activity -> do
+      (hungerChange, thirstChange, healthChange) <- activityEffects activity
+      return $ applyChanges playStatus hungerChange thirstChange healthChange
+    Nothing -> return playStatus -- Return the original status if the character doesn't match any activity
+
+applyChanges :: PlayStatus -> Int -> Int -> Int -> PlayStatus
+applyChanges playStatus hungerChange thirstChange healthChange =
+  let -- Calculate new values while ensuring they stay within the 0-100 range
+      newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
+      newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
+      newHealth = max 0 (min 100 (health playStatus + healthChange))
+
+      -- Update the 'alive' status based on the new health value
+      newAlive = newHealth > 0
+   in -- Update and return the new PlayStatus
+
+      playStatus
+        { hunger = newHunger,
+          thirsty = newThirst,
+          health = newHealth,
+          alive = newAlive
+        }
