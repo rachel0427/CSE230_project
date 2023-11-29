@@ -26,7 +26,7 @@ data Option = Option
                 }
 
 demoOption :: Option      
-demoOption = Option { op1 = "Foraging" 
-             , op2 = "Hunting"
-             , op3 = "Sleeping"
-             , op4 = "Collecting water"}
+demoOption = Option { op1 = "Search for edible mushrooms in the forest." 
+             , op2 = "Hunt small animals like rabbits or squirrels."
+             , op3 = "Look up at the sky and contemplate your survival..."
+             , op4 = "Make a fire to keep you warm."}
