@@ -139,3 +139,9 @@ applyChanges playStatus hungerChange thirstChange healthChange =
           health = newHealth,
           alive = newAlive
         }
+
+getDescription :: M.Map Char Activity -> Char -> String
+getDescription activityMap char =
+  case M.lookup char activityMap of
+    Just activity -> activityText activity
+    Nothing -> "No activity found for this key"
