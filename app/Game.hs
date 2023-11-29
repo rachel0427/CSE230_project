@@ -34,13 +34,15 @@ getRandomWeather = do
     _ -> error "Unexpected random number"
 
 -- Update the game state based on the chosen activity
-updateGameState :: GameState -> Activity -> GameState
-updateGameState gs activity =
-  let (hungerChange, thirstChange) = activityEffects activity
-      -- Apply changes to GameState
-      newHunger = max 0 (min 100 (hungerBar gs + hungerChange))
-      newThirst = max 0 (min 100 (thirstBar gs + thirstChange))
-   in gs {hungerBar = newHunger, thirstBar = newThirst}
+updateGameState :: GameState -> Activity -> IO GameState
+updateGameState gs activity = do
+  (hungerChange, thirstChange, healthChange) <- activityEffects activity
+  -- Apply changes to GameState
+  let newHunger = max 0 (min 100 (hungerBar gs + hungerChange))
+  let newThirst = max 0 (min 100 (thirstBar gs + thirstChange))
+  let newHealth = max 0 (min 100 (healthBar gs + healthChange))
+  let newAlive = newHealth > 0
+  return gs {hungerBar = newHunger, thirstBar = newThirst, healthBar = newHealth, alive = newAlive}
 
 -- Check whether player is still alive
 checkAlive :: GameState -> GameState

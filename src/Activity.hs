@@ -34,22 +34,37 @@ describeSpecificActivity (Resting Meditating) = "Close your eyes and think..."
 describeSpecificActivity (Random BuildTent) = "Build a comfy tent."
 describeSpecificActivity (Random MakeFire) = "Make a fire to keep you warm."
 
--- Define a type for activity effects
-type ActivityEffects = (Int, Int) -- (HungerChange, ThirstChange)
+---- helper for activity effects
 
--- Function to get effects of an activity
-activityEffects :: Activity -> ActivityEffects
+type ActivityEffects = (Int, Int, Int) -- (HungerChange, ThirstChange, HealthChange)
+
+activityEffects :: Activity -> IO ActivityEffects
 -- Foraging
-activityEffects (Foraging BerryPicking) = (5, -3)
-activityEffects (Foraging MushroomForaging) = (3, -2)
+activityEffects (Foraging BerryPicking) =
+  generateRandomEffects (4, 6) (2, 4) (-2, 4)
+activityEffects (Foraging MushroomForaging) =
+  generateRandomEffects (2, 4) (-3, -1) (-2, 4)
 -- Hunting
-activityEffects (Hunting SmallGameHunting) = (10, -5)
+activityEffects (Hunting SmallGameHunting) =
+  generateRandomEffects (9, 11) (-6, -4) (-2, 4)
 -- Resting
-activityEffects (Resting StarGazing) = (0, -5)
-activityEffects (Resting Meditating) = (0, -5)
+activityEffects (Resting StarGazing) =
+  generateRandomEffects (-5, 0) (-5, 0) (-2, 4)
+activityEffects (Resting Meditating) =
+  generateRandomEffects (-5, 0) (-5, 0) (-2, 4)
 -- Random
-activityEffects (Random BuildTent) = (-10, -10)
-activityEffects (Random MakeFire) = (-5, -5)
+activityEffects (Random BuildTent) =
+  generateRandomEffects (-11, -9) (-11, -9) (5, 10)
+activityEffects (Random MakeFire) =
+  generateRandomEffects (-6, -4) (-6, -4) (1, 5)
+
+-- Generate random activity effects
+generateRandomEffects :: (Int, Int) -> (Int, Int) -> (Int, Int) -> IO ActivityEffects
+generateRandomEffects (hungerMin, hungerMax) (thirstMin, thirstMax) (healthMin, healthMax) = do
+  hungerChange <- randomRIO (hungerMin, hungerMax)
+  thirstChange <- randomRIO (thirstMin, thirstMax)
+  healthChange <- randomRIO (healthMin, healthMax)
+  return (hungerChange, thirstChange, healthChange)
 
 -- TODO
 -- range of effect on hunger/thirst can be negative, check this value in Game.hs, if negative, print something "poison..."
