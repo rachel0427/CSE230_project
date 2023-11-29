@@ -1,6 +1,5 @@
 module Game where
 
-import Activity
 import Activity (Activity, activityEffects)
 import System.Random (randomRIO)
 
@@ -11,7 +10,8 @@ data GameState = GameState
     hungerBar :: Int,
     thirstBar :: Int,
     timeBlocks :: Int,
-    weather :: Weather
+    weather :: Weather,
+    alive :: Bool
   }
 
 -- | Custom data type to represent the weather
@@ -21,7 +21,7 @@ data Weather = Sunny | Rainy | Stormy
 initializeGame :: IO GameState
 initializeGame = do
   initialWeather <- getRandomWeather
-  return $ GameState 0 100 100 100 5 initialWeather
+  return $ GameState 0 100 100 100 5 initialWeather True
 
 -- | Get a random weather for the game
 getRandomWeather :: IO Weather
@@ -34,13 +34,18 @@ getRandomWeather = do
     _ -> error "Unexpected random number"
 
 -- Update the game state based on the chosen activity
-updateGameState :: GameState -> Activity -> IO GameState
-updateGameState gs activity = do
+updateGameState :: GameState -> Activity -> GameState
+updateGameState gs activity =
   let (hungerChange, thirstChange) = activityEffects activity
-  -- Apply changes to GameState
-  let newHunger = max 0 (min 100 (hungerBar gs + hungerChange))
-  let newThirst = max 0 (min 100 (thirstBar gs + thirstChange))
-  return gs {hungerBar = newHunger, thirstBar = newThirst}
+      -- Apply changes to GameState
+      newHunger = max 0 (min 100 (hungerBar gs + hungerChange))
+      newThirst = max 0 (min 100 (thirstBar gs + thirstChange))
+   in gs {hungerBar = newHunger, thirstBar = newThirst}
+
+-- Check whether player is still alive
+checkAlive :: GameState -> GameState
+checkAlive gs =
+  gs {alive = healthBar gs >= 0}
 
 -- Rest of the Game.hs code
 {-
