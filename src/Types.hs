@@ -1,5 +1,7 @@
 module Types (module Types) where
 import Brick      
+import Data.Map as M
+import Activity
 
 -- Define the weather data type
 data Weather = Sunny | Rainy | Stormy deriving (Show, Eq)
@@ -10,4 +12,21 @@ data PlayStatus = PlayStatus
                     , health  :: Int   -- range [0, 100]
                     , weather :: Weather
                     , date :: Int      -- range [1, 10]
+                    , alive :: Bool
+                    , activityMap :: M.Map Char Activity
                     } deriving (Show, Eq)
+
+data Option = Option 
+                {
+                      op1 :: String 
+                    , op2 :: String
+                    , op3 :: String
+                    , op4 :: String
+
+                }
+
+demoOption :: Option      
+demoOption = Option { op1 = "Foraging" 
+             , op2 = "Hunting"
+             , op3 = "Sleeping"
+             , op4 = "Collecting water"}
