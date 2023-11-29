@@ -49,21 +49,20 @@ uiStartGame (StartGame st) =
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
-      [ hBox
-          [ borderWithLabel (str "Environment") $ padTop (Pad 1) $ strWrap ("Weather: " ++ (show (weather st)))
-           ,vLimit 20 $ hLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
-              [ str $ "Health " ++ show (health st)
-              , str $ "Hunger " ++ show (hunger st)
-              , str $ "Thirsty " ++ show (thirsty st)
-              ]
-          , vLimit 20 $ hLimit 20 $ borderWithLabel (str "Actions") $ padTop (Pad 1) $ vBox
-              [ str $ "a. " ++ (op1 demoOption)
-              , str $ "b. " ++ (op2 demoOption)
-              , str $ "c. " ++ (op3 demoOption)
-              , str $ "d. " ++ (op4 demoOption)
-              ]
-          ]
-      ]
+        [ vBox [str (" Weather: " ++ show (weather st))]
+          , center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
+            [ str $ "Health " ++ show (health st)
+            , str $ "Hunger " ++ show (hunger st)
+            , str $ "Thirsty " ++ show (thirsty st)
+            ]
+        , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
+            [ str $ "a. " ++ (op1 demoOption)
+            , str $ "b. " ++ (op2 demoOption)
+            , str $ "c. " ++ (op3 demoOption)
+            , str $ "d. " ++ (op4 demoOption)
+            ]
+        ]
+      
 
 -- uiStartGame st = center $ vBox
 -- uiStartGame st = center $ vBox
