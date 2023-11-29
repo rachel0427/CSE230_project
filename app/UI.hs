@@ -44,14 +44,24 @@ ui =
         ]
 
 uiStartGame :: UIState -> Widget Name 
+uiStartGame (StartGame st) = 
+    center $
+    borderWithLabel (str $ "Days survived: " ++ show (date st)) $
+    hCenter $
+    vBox
+      [ hBox
+          [ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ strWrap (show (health st))
+          , borderWithLabel (str "Actions") $ padTop (Pad 1) $ (str "Option 1:")
+          ]
+      ]
 -- uiStartGame st = center $ vBox
-uiStartGame st = center $ vBox
-  [ str "You are in the game!"
-  , str $ "Hunger: " ++ show (hunger st)
-  , str $ "Health: " ++ show (health st)
-  , str $ "Weather: " ++ show (weather st)
-  , str $ "Date: " ++ show (date st)
-  ]
+-- uiStartGame st = center $ vBox
+--   [ str "You are in the game!"
+--   , str $ "Hunger: " ++ show (hunger st)
+--   , str $ "Health: " ++ show (health st)
+--   , str $ "Weather: " ++ show (weather st)
+--   , str $ "Date: " ++ show (date st)
+--   ]
 -- uiStartGame =
 --     center $
 --     borderWithLabel (str "New Game Page") $
@@ -61,6 +71,6 @@ uiStartGame st = center $ vBox
 handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
 handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = continue initNewGame
 handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
-handleEvent (StartGame hlt hng w dt) (VtyEvent (EvKey (KChar 'a') [])) =
-  continue $ StartGame (max 0 (hlt - 10)) (max 0 (hng - 10)) w dt
+handleEvent (StartGame (PlayStatus hunger thirsty health weather date)) (VtyEvent (EvKey (KChar 'a') [])) =
+  continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1)
 handleEvent _ _ = continue Menu
