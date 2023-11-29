@@ -114,8 +114,8 @@ assignActivitiesToKeys = do
   return activityMap
 
 -- Function to update PlayStatus based on the user's input
-updatePlayStatusWithChar :: M.Map Char Activity -> Char -> PlayStatus -> IO PlayStatus
-updatePlayStatusWithChar activityMap char playStatus =
+updatePlayStatusWithChar :: Char -> PlayStatus -> IO PlayStatus
+updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ _ _ _ activityMap) =
   case M.lookup char activityMap of
     Just activity -> do
       (hungerChange, thirstChange, healthChange) <- activityEffects activity
@@ -140,8 +140,8 @@ applyChanges playStatus hungerChange thirstChange healthChange =
           alive = newAlive
         }
 
-getDescription :: M.Map Char Activity -> Char -> String
-getDescription activityMap char =
+getDescription :: PlayStatus -> Char -> String
+getDescription (PlayStatus _ _ _ _ _ _ activityMap) char =
   case M.lookup char activityMap of
     Just activity -> activityText activity
     Nothing -> "No activity found for this key"
