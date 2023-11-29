@@ -13,7 +13,6 @@ The Time System: Each day has 5 time blocks that the player can use to allocate 
 #### Survival Criteria: 
 The results of the player's choices will affect several criterias, including the health bar, the hunger bar, and the thirst bar. The values of these bars change in accordance to the activities the player select, time elapses, and the weather. If either of the hunger or thirst bar depletes, the player’s health will drop dramatically over each time block. Once the health value reaches 0, the game ends.
 
-
 #### The Weather System: 
 On each game day, a type of weather will be randomly generated. Depending on the weather, the player's health, hunger, and thirst will decrease at different rates.
 
@@ -34,3 +33,12 @@ There are various activities for user to choose each day. Different activites co
 
 ### Interface Design
 The UI will display the bars of survival and a brief prompt that leads the player’s choices, 3-4 text based choices or visual choices (eg. coconut, fish,object icons) will be displayed in the center of the interface. We also plan to have some decorative arts to make the interface more realistic and engaging.
+
+### Update for Milestone 2
+#### Overview
+
+#### Architecture
+
+#### Challenges and Solutions
+
+#### Expectations
