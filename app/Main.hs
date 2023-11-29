@@ -15,23 +15,6 @@ import UI
 
 -- Main.hs
 
--- Function to map keys to activities
-assignActivitiesToKeys :: IO (M.Map Char Activity)
-assignActivitiesToKeys = do
-  foragingActivity <- getRandomForagingActivity
-  huntingActivity <- getRandomHuntingActivity
-  restingActivity <- getRandomRestingActivity
-  randomActivity <- getRandomRandomActivity
-
-  let activityMap =
-        M.fromList
-          [ ('W', Foraging foragingActivity),
-            ('A', Hunting huntingActivity),
-            ('S', Resting restingActivity),
-            ('D', Random randomActivity)
-          ]
-  return activityMap
-
 -- | The main function to run the Brick application
 main :: IO ()
 main = do
