@@ -1,6 +1,7 @@
 module Activity where
 
 import Brick
+import System.Random (randomRIO)
 
 -- Define specific activities for each category
 data ForagingActivity = BerryPicking | MushroomForaging | FindWater deriving (Show, Eq)
@@ -52,3 +53,34 @@ activityEffects (Random MakeFire) = (-5, -5)
 
 -- TODO
 -- range of effect on hunger/thirst can be negative, check this value in Game.hs, if negative, print something "poison..."
+getRandomForagingActivity :: IO ForagingActivity
+getRandomForagingActivity = do
+  rand <- randomRIO (1 :: Int, 3 :: Int)
+  return $ case rand of
+    1 -> BerryPicking
+    2 -> MushroomForaging
+    3 -> FindWater
+    _ -> error "Unexpected random number"
+
+getRandomHuntingActivity :: IO HuntingActivity
+getRandomHuntingActivity = do
+  rand <- randomRIO (1 :: Int, 1 :: Int)
+  return $ case rand of
+    1 -> SmallGameHunting
+    _ -> error "Unexpected random number"
+
+getRandomRestingActivity :: IO RestingActivity
+getRandomRestingActivity = do
+  rand <- randomRIO (1 :: Int, 2 :: Int)
+  return $ case rand of
+    1 -> StarGazing
+    2 -> Meditating
+    _ -> error "Unexpected random number"
+
+getRandomRandomActivity :: IO RandomActivity
+getRandomRandomActivity = do
+  rand <- randomRIO (1 :: Int, 2 :: Int)
+  return $ case rand of
+    1 -> BuildTent
+    2 -> MakeFire
+    _ -> error "Unexpected random number"
