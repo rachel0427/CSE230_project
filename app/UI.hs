@@ -8,8 +8,11 @@ import Brick.Widgets.Border.Style (unicode)
 import Control.Monad (void)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
+import System.Random (randomRIO)
+import Control.Monad.IO.Class (liftIO)
 
 import Types
+import Game
 
 data UIState = Menu | StartGame PlayStatus deriving (Show, Eq)
 
@@ -26,12 +29,14 @@ app = App
     , appAttrMap = const $ attrMap Graphics.Vty.defAttr []
     }
 
-initNewGame :: UIState
-initNewGame = StartGame PlayStatus {hunger = 0, thirsty = 0, health = 100, weather = Sunny, date = 1}
+initNewGame :: IO UIState
+-- initNewGame = StartGame PlayStatus {hunger = 0, thirsty = 0, health = 100, weather = Sunny, date = 1}
+initNewGame = randomInitNewGame
 
 drawUI :: UIState -> [Widget Name]
 drawUI Menu = [ui]
-drawUI initNewGame = [uiStartGame initNewGame]
+-- drawUI initNewGame = [uiStartGame initNewGame]
+drawUI st = [uiStartGame st]
 
 ui :: Widget Name
 ui =
@@ -65,23 +70,27 @@ uiStartGame (StartGame st) =
           ]
       ]
 
--- uiStartGame st = center $ vBox
--- uiStartGame st = center $ vBox
---   [ str "You are in the game!"
---   , str $ "Hunger: " ++ show (hunger st)
---   , str $ "Health: " ++ show (health st)
---   , str $ "Weather: " ++ show (weather st)
---   , str $ "Date: " ++ show (date st)
---   ]
--- uiStartGame =
---     center $
---     borderWithLabel (str "New Game Page") $
---     hCenter $
---     vBox [str "Start new game!"]
 
 handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
-handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = continue initNewGame
+handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = liftIO initNewGame >>= continue
 handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
-handleEvent (StartGame (PlayStatus hunger thirsty health weather date)) (VtyEvent (EvKey (KChar 'a') [])) =
-  continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1)
+handleEvent (StartGame (PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
+  continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 handleEvent _ _ = continue Menu
+
+-- random generate initial state
+randomInitNewGame :: IO UIState
+randomInitNewGame = do
+--   let initialHealth = 100
+--   let initialDate = 1
+--   let initialHunger = 0
+--   let initialThirst = 0
+  randomWeather <- getRandomWeather
+  randomMap <- assignActivitiesToKeys
+  return $ StartGame PlayStatus { hunger = 100, 
+                                thirsty = 100, 
+                                health = 100, 
+                                weather = randomWeather, 
+                                date = 1,
+                                alive = True,
+                                activityMap = randomMap }
