@@ -45,15 +45,26 @@ ui =
 
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
-    center $
+    center $ vLimit 100 $ hLimit 100 $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
       [ hBox
-          [ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ strWrap (show (health st))
-          , borderWithLabel (str "Actions") $ padTop (Pad 1) $ (str "Option 1:")
+          [ borderWithLabel (str "Environment") $ padTop (Pad 1) $ strWrap ("Weather: " ++ (show (weather st)))
+           ,vLimit 20 $ hLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
+              [ str $ "Health " ++ show (health st)
+              , str $ "Hunger " ++ show (hunger st)
+              , str $ "Thirsty " ++ show (thirsty st)
+              ]
+          , vLimit 20 $ hLimit 20 $ borderWithLabel (str "Actions") $ padTop (Pad 1) $ vBox
+              [ str $ "a. " ++ (op1 demoOption)
+              , str $ "b. " ++ (op2 demoOption)
+              , str $ "c. " ++ (op3 demoOption)
+              , str $ "d. " ++ (op4 demoOption)
+              ]
           ]
       ]
+
 -- uiStartGame st = center $ vBox
 -- uiStartGame st = center $ vBox
 --   [ str "You are in the game!"

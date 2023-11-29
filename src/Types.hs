@@ -11,3 +11,18 @@ data PlayStatus = PlayStatus
                     , weather :: Weather
                     , date :: Int      -- range [1, 10]
                     } deriving (Show, Eq)
+
+data Option = Option 
+                {
+                      op1 :: String 
+                    , op2 :: String
+                    , op3 :: String
+                    , op4 :: String
+
+                }
+
+demoOption :: Option      
+demoOption = Option { op1 = "Foraging" 
+             , op2 = "Hunting"
+             , op3 = "Sleeping"
+             , op4 = "Collecting water"}
