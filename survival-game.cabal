@@ -3,13 +3,26 @@ version:             0.1.0.0
 build-type:          Simple
 cabal-version:       >=1.10
 
-executable survival-game
-  hs-source-dirs:      app
-  main-is:             Main.hs
-  ghc-options:         -threaded
+library 
+  exposed-modules:     Types
+  hs-source-dirs:      src
   build-depends:       base >=4.14 && <5
                      , brick
                      , random
                      , random-shuffle
                      , vty
+  default-language:    Haskell2010
+
+executable survival-game
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded
+  other-modules:     Game
+                     , UI
+  build-depends:       base >=4.14 && <5
+                     , brick
+                     , random
+                     , random-shuffle
+                     , vty
+                     , survival-game
   default-language:    Haskell2010

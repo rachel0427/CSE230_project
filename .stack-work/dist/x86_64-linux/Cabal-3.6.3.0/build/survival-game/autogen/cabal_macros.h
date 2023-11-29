@@ -50,6 +50,16 @@
   (major1) == 0 && (major2) <  0 || \
   (major1) == 0 && (major2) == 0 && (minor) <= 4)
 #endif /* MIN_VERSION_random_shuffle */
+/* package survival-game-0.1.0.0 */
+#ifndef VERSION_survival_game
+#define VERSION_survival_game "0.1.0.0"
+#endif /* VERSION_survival_game */
+#ifndef MIN_VERSION_survival_game
+#define MIN_VERSION_survival_game(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  1 || \
+  (major1) == 0 && (major2) == 1 && (minor) <= 0)
+#endif /* MIN_VERSION_survival_game */
 /* package vty-5.37 */
 #ifndef VERSION_vty
 #define VERSION_vty "5.37"
@@ -143,7 +153,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-5JADvT5hiC6JOUw8umc3xV-survival-game"
+#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-HwBB4w3670I15UxFfxAIFV-survival-game"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
