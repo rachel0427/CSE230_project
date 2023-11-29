@@ -1,8 +1,12 @@
 /workspaces/CSE230_project/app/Game.hs:
-  hash: 2d903c3f67b9291f14e15dc5c968c776ce6e35aeeb958f95b52ed727b1bb9bba
+  hash: 2fb32814431b26d754425c9d35b1ab44d740d370e054a2ef3ca8e6031b6ed40c
 /workspaces/CSE230_project/app/Main.hs:
-  hash: bcc449259d489e2867b9ec1c65576c8357a520ad672e5c664e36967b55c45341
+  hash: 1b7e95f372d92cc4211f5dd8d93fad452b4d6f2e3d6b088d53c94cb9abbd6b4d
 /workspaces/CSE230_project/app/UI.hs:
-  hash: 675b4085c4bc86a5e5cb78c3b48f569a75b679e7580956b5a4ae59f9a0d39417
+  hash: 1569e7105dd11e4bdc870f0f38834335d0caf728f1a0b55bdef7366034fa4d35
+/workspaces/CSE230_project/src/Activity.hs:
+  hash: d07f48be8c670d118059f038656e272c9b24d5e7d19108790733fbc01b14c107
+/workspaces/CSE230_project/src/Types.hs:
+  hash: 58404fcde9b05b1570f44c9101bcca86b50629e54dce00ea4b389995b07fbd95
 /workspaces/CSE230_project/survival-game.cabal:
-  hash: 56d6b0bf30bbd74dda074cddde101d1f06cda5380685f8d002fa6eafe9be3163
+  hash: 67bf6fa57ace6e448ce47985970ffd5d25b236b5bd0bcd116be5992aa27564b9

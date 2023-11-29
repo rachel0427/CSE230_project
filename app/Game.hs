@@ -1,27 +1,30 @@
 module Game where
 
-import Activity (Activity, activityEffects)
+-- import Activity (Activity, activityEffects)
+import Activity
 import System.Random (randomRIO)
+import Data.Map as M
+import Types
 
 -- | Custom data type to represent the game state
-data GameState = GameState
-  { daysSurvived :: Int,
-    healthBar :: Int,
-    hungerBar :: Int,
-    thirstBar :: Int,
-    timeBlocks :: Int,
-    weather :: Weather,
-    alive :: Bool
-  }
+-- data PlayStatus = PlayStatus
+--   { daysSurvived :: Int,
+--     healthBar :: Int,
+--     hungerBar :: Int,
+--     thirstBar :: Int,
+--     timeBlocks :: Int,
+--     weather1 :: Weather,
+--     alive :: Bool
+--   }
 
--- | Custom data type to represent the weather
-data Weather = Sunny | Rainy | Stormy
+-- -- | Custom data type to represent the weather
+-- data Weather = Sunny | Rainy | Stormy
 
 -- | Initialize a new game state
-initializeGame :: IO GameState
-initializeGame = do
-  initialWeather <- getRandomWeather
-  return $ GameState 0 100 100 100 5 initialWeather True
+-- initializeGame :: IO PlayStatus
+-- initializeGame = do
+--   initialWeather <- getRandomWeather
+--   return $ PlayStatus 100 100 100 initialWeather 0 True
 
 -- | Get a random weather for the game
 getRandomWeather :: IO Weather
@@ -34,20 +37,20 @@ getRandomWeather = do
     _ -> error "Unexpected random number"
 
 -- Update the game state based on the chosen activity
-updateGameState :: GameState -> Activity -> IO GameState
-updateGameState gs activity = do
+updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
+updatePlayStatus gs activity = do
   (hungerChange, thirstChange, healthChange) <- activityEffects activity
-  -- Apply changes to GameState
-  let newHunger = max 0 (min 100 (hungerBar gs + hungerChange))
-  let newThirst = max 0 (min 100 (thirstBar gs + thirstChange))
-  let newHealth = max 0 (min 100 (healthBar gs + healthChange))
+  -- Apply changes to PlayStatus
+  let newHunger = max 0 (min 100 (hunger gs + hungerChange))
+  let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
+  let newHealth = max 0 (min 100 (health gs + healthChange))
   let newAlive = newHealth > 0
-  return gs {hungerBar = newHunger, thirstBar = newThirst, healthBar = newHealth, alive = newAlive}
+  return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
 
 -- Check whether player is still alive
-checkAlive :: GameState -> GameState
+checkAlive :: PlayStatus -> PlayStatus
 checkAlive gs =
-  gs {alive = healthBar gs >= 0}
+  gs {alive = health gs >= 0}
 
 -- Rest of the Game.hs code
 {-
@@ -92,3 +95,20 @@ calculateHealth activity w currentHealth = case activity of
   Resting -> currentHealth + 10
   Exploring -> currentHealth - 20 - weatherPenalty w
 -}
+
+-- Function to map keys to activities
+assignActivitiesToKeys :: IO (M.Map Char Activity)
+assignActivitiesToKeys = do
+  foragingActivity <- getRandomForagingActivity
+  huntingActivity <- getRandomHuntingActivity
+  restingActivity <- getRandomRestingActivity
+  randomActivity <- getRandomRandomActivity
+
+  let activityMap =
+        M.fromList
+          [ ('W', Foraging foragingActivity),
+            ('A', Hunting huntingActivity),
+            ('S', Resting restingActivity),
+            ('D', Random randomActivity)
+          ]
+  return activityMap

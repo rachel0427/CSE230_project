@@ -30,6 +30,16 @@
   (major1) == 0 && (major2) <  54 || \
   (major1) == 0 && (major2) == 54 && (minor) <= 0)
 #endif /* MIN_VERSION_brick */
+/* package containers-0.6.5.1 */
+#ifndef VERSION_containers
+#define VERSION_containers "0.6.5.1"
+#endif /* VERSION_containers */
+#ifndef MIN_VERSION_containers
+#define MIN_VERSION_containers(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  6 || \
+  (major1) == 0 && (major2) == 6 && (minor) <= 5)
+#endif /* MIN_VERSION_containers */
 /* package random-1.2.1.1 */
 #ifndef VERSION_random
 #define VERSION_random "1.2.1.1"
@@ -153,7 +163,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-HwBB4w3670I15UxFfxAIFV-survival-game"
+#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-HsqSwlZejvdH8bnBA7KNB3-survival-game"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
