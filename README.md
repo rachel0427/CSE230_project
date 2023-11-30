@@ -40,10 +40,17 @@ Over the past weeks, we completed an initial simplified version of our game and 
 
 #### Architecture
 
-#### Challenges and Solutions
+##### UI Component
 
+##### Game Logic
+We implemented our main game logic in the `Game.hs` file that handles generating initial player status, activity options, and player status updates based on player input. We defined the basic characteristics of the activities (e.g. text description, activity effect) in the  `src/Activity.hs` file. It includes a pool of predefined activities that would be randomly selected and displayed to the player.
+
+#### Challenges and Solutions
+  1. Our very first challenge is coordinating our work as a group. Since we are using difference operating systems and have different schedules, we find it difficult at first to handle collaboration as well as version control. Our solution was to plan our meetings ahead and try our best to allocate large chunks of time to work together as a team. To unify our developemnt environment, we choose to work with GitHub Codespace. We also developed practiced personal branching strategy to maintain version control. At the same time, we split our work into two main categories, which is UI design/user interaction handling and game logic implementation. When both team completes their individual work, we then come together to merge our results.
+  2. ...
 #### Expectations
 We believe we are at a good place in our development and exepct to complete the game by the deadline. However, during our development, we have made some updates to our goals and designs that would benefit the overall outcome and user experience. 
 
-  1. something
-  2. something
+  1. We have decided to remove the time block feature so the player only performs 1 activity per day. During our development, we realized that adding the time block feature would add too much complexity as well as repetitiveness to this game, and removing this feature would improve clearity and player experience. 
+  2. Since we have implemented the foundational logic of the game, we want to make improvements regarding visual aspects of the game. We plan to add some ASCII arts to our game interface.
+  3. ...
