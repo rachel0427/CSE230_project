@@ -36,7 +36,7 @@ The UI will display the bars of survival and a brief prompt that leads the playe
 
 ### Update for Milestone 2
 #### Overview
-Over the past weeks, we completed an initial simplified version of our game and set a good foundation for future updates. Our have implemented a simple user interface that displays player status (hunger, thirst, health), weather status, and date in text format. In each in-game day, a series of options (randomly selected from a predefined pool) are displayed to the player, and the player's selection leads to a status update.  
+Over the past weeks, we completed an initial simplified version of our game and set a good foundation for future updates. We have implemented a simple user interface that displays player status (hunger, thirst, health), weather status, and date in text format. In each in-game day, a series of options (randomly selected from a predefined pool) are displayed to the player, and the player's selection leads to a status update.  
 
 #### Architecture
 
@@ -46,11 +46,12 @@ Over the past weeks, we completed an initial simplified version of our game and 
 We implemented our main game logic in the `Game.hs` file that handles generating initial player status, activity options, and player status updates based on player input. We defined the basic characteristics of the activities (e.g. text description, activity effect) in the  `src/Activity.hs` file. It includes a pool of predefined activities that would be randomly selected and displayed to the player.
 
 #### Challenges and Solutions
-  1. Our very first challenge is coordinating our work as a group. Since we are using difference operating systems and have different schedules, we find it difficult at first to handle collaboration as well as version control. Our solution was to plan our meetings ahead and try our best to allocate large chunks of time to work together as a team. To unify our developemnt environment, we choose to work with GitHub Codespace. We also developed practiced personal branching strategy to maintain version control. At the same time, we split our work into two main categories, which is UI design/user interaction handling and game logic implementation. When both team completes their individual work, we then come together to merge our results.
-  2. ...
+  1. Our very first challenge is coordinating our work as a group. Since we are using different operating systems and have different schedules, we find it difficult at first to handle collaboration as well as version control. Our solution was to plan our meetings ahead and try our best to allocate large chunks of time to work together as a team. To unify our development environment, we choose to work with GitHub Codespace. We also practiced personal branching strategy to maintain version control and merge upon group revision. At the same time, we split our work into two main categories - UI design, **user interaction handling** and **game logic implementation**. When both team completes their individual work, we then come together to merge our results.
+  2. (Possibly brick library UI integration)
 #### Expectations
-We believe we are at a good place in our development and exepct to complete the game by the deadline. However, during our development, we have made some updates to our goals and designs that would benefit the overall outcome and user experience. 
+We believe we are at a good place in our development and expect to complete the game by the deadline. However, during our development, we have made some updates to our goals and designs that would benefit the overall outcome and user experience.
 
   1. We have decided to remove the time block feature so the player only performs 1 activity per day. During our development, we realized that adding the time block feature would add too much complexity as well as repetitiveness to this game, and removing this feature would improve clearity and player experience. 
   2. Since we have implemented the foundational logic of the game, we want to make improvements regarding visual aspects of the game. We plan to add some ASCII arts to our game interface.
-  3. ...
+  3. We also want to integrate the logic of early stopping the game when user triggers some selection, for example calling for help and succeeding or deer hunting and get hurt. This adds to the randomness of our game and makes it more playable.
+  4. The weather's influence on the survival play status is yet to be implemented. We expect to incorporate the changes in our next developmental stage. 
