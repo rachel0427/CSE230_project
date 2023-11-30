@@ -112,14 +112,35 @@ activityEffects (Hunting TrapSetting) =
   generateRandomEffects (10, 15) (-6, -4) (0, 10)
 -- Resting
 activityEffects (Resting StarGazing) =
-  generateRandomEffects (-5, 0) (-5, 0) (-2, 4)
+  generateRandomEffects (-5, 0) (-5, 0) (5, 10)
 activityEffects (Resting Meditating) =
-  generateRandomEffects (-5, 0) (-5, 0) (-2, 4)
+  generateRandomEffects (-5, 0) (-5, 0) (5, 10)
+activityEffects (Resting Daydreaming) =
+  generateRandomEffects (-10, 10) (-10, 10) (10, 15)
+activityEffects (Resting SunBathing) =
+  generateRandomEffects (-5, 0) (-5, 0) (-5, 10)
+activityEffects (Resting Yoga) =
+  generateRandomEffects (-5, 0) (-5, 0) (0, 5)
+activityEffects (Resting Sleeping) =
+  generateRandomEffects (-10, 5) (-5, 0) (10, 20)
+  
 -- Random
 activityEffects (Random BuildTent) =
   generateRandomEffects (-11, -9) (-11, -9) (5, 10)
 activityEffects (Random MakeFire) =
   generateRandomEffects (-6, -4) (-6, -4) (1, 5)
+activityEffects (Random MapMaking) =
+  generateRandomEffects (-11, -9) (-11, -9) (5, 10)
+activityEffects (Random ShelterImproving) =
+  generateRandomEffects (-10, -4) (-6, -4) (5, 20)
+activityEffects (Random WaterPurifying) =
+  generateRandomEffects (-5, -0) (-5, -0) (10, 15)
+activityEffects (Random FortuneTelling) =
+  generateRandomEffects (-10, 10) (-5, -3) (1, 5)
+activityEffects (Random NightPatrolling) =
+  generateRandomEffects (-10, 5) (-10, -5) (10, 15)
+activityEffects (Random SignalingForHelp) =
+  generateRandomEffects (-20, 5) (-10, -10) (-20, 25)
 
 -- Generate random activity effects
 generateRandomEffects :: (Int, Int) -> (Int, Int) -> (Int, Int) -> IO ActivityEffects
