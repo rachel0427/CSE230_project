@@ -5,6 +5,7 @@ cabal-version:       >=1.10
 
 library 
   exposed-modules:     Types
+                     , Activity
   hs-source-dirs:      src
   build-depends:       base >=4.14 && <5
                      , brick
