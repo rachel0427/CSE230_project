@@ -50,11 +50,15 @@ ui =
 
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
+    let textArtResource = ""
+    in
+    let image = string defAttr textArtResource
+    in
     center $ vLimit 100 $ hLimit 100 $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
-        [ vBox [str (" Weather: " ++ show (weather st))]
+        [ vBox [str (" Weather: " ++ show (weather st)), raw image]
           , center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
             [ hCenter $ str $ "Health " ++ show (health st)
             , hCenter $ str $ "Hunger " ++ show (hunger st)
