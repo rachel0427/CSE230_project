@@ -66,10 +66,10 @@ uiStartGame (StartGame st) =
             , hCenter $ str $ " "
             ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
-            [ str $ "a. " ++ (op1 demoOption)
-            , str $ "b. " ++ (op2 demoOption)
-            , str $ "c. " ++ (op3 demoOption)
-            , str $ "d. " ++ (op4 demoOption)
+            [ str $ "w. " ++ (getDescription st 'W')
+            , str $ "a. " ++ (getDescription st 'A')
+            , str $ "s. " ++ (getDescription st 'S')
+            , str $ "d. " ++ (getDescription st 'D')
             , hCenter $ str $ " "
             ]
         ]
