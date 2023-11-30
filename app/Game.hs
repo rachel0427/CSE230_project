@@ -5,6 +5,7 @@ import Activity
 import Data.Map as M
 import System.Random (randomRIO)
 import Types
+import Control.Monad.IO.Class (liftIO)
 
 -- | Custom data type to represent the game state
 -- data PlayStatus = PlayStatus
@@ -119,26 +120,49 @@ updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ _ _ _ activityMap) =
   case M.lookup char activityMap of
     Just activity -> do
       (hungerChange, thirstChange, healthChange) <- activityEffects activity
-      return $ applyChanges playStatus hungerChange thirstChange healthChange
+      pt <- applyChanges playStatus hungerChange thirstChange healthChange
+      return pt
     Nothing -> return playStatus -- Return the original status if the character doesn't match any activity
 
-applyChanges :: PlayStatus -> Int -> Int -> Int -> PlayStatus
-applyChanges playStatus hungerChange thirstChange healthChange =
-  let -- Calculate new values while ensuring they stay within the 0-100 range
-      newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
-      newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
-      newHealth = max 0 (min 100 (health playStatus + healthChange))
+applyChanges :: PlayStatus -> Int -> Int -> Int -> IO PlayStatus
+-- applyChanges playStatus hungerChange thirstChange healthChange =
+--   let -- Calculate new values while ensuring they stay within the 0-100 range
+--       newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
+--       newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
+--       newHealth = max 0 (min 100 (health playStatus + healthChange))
 
-      -- Update the 'alive' status based on the new health value
-      newAlive = newHealth > 0
-   in -- Update and return the new PlayStatus
+--       -- Update the 'alive' status based on the new health value
+--       newAlive = newHealth > 0
 
-      playStatus
-        { hunger = newHunger,
-          thirsty = newThirst,
-          health = newHealth,
-          alive = newAlive
-        }
+--       -- Generate new activity options to choose from
+--       --randomMap = liftIO assignActivitiesToKeys
+--    in -- Update and return the new PlayStatus
+
+--       playStatus
+--         { hunger = newHunger,
+--           thirsty = newThirst,
+--           health = newHealth,
+--           alive = newAlive,
+--           activityMap = liftIO assignActivitiesToKeys
+--         }
+applyChanges playStatus hungerChange thirstChange healthChange = do
+  newActivityMap <- liftIO assignActivitiesToKeys
+  let
+    newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
+    newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
+    newHealth = max 0 (min 100 (health playStatus + healthChange))
+    newAlive = newHealth > 0
+
+  return $
+    playStatus
+      { hunger = newHunger,
+        thirsty = newThirst,
+        health = newHealth,
+        alive = newAlive,
+        activityMap = newActivityMap
+      }
+
+
 
 getDescription :: PlayStatus -> Char -> String
 getDescription (PlayStatus _ _ _ _ _ _ activityMap) char =
