@@ -36,9 +36,14 @@ The UI will display the bars of survival and a brief prompt that leads the playe
 
 ### Update for Milestone 2
 #### Overview
+Over the past weeks, we completed an initial simplified version of our game and set a good foundation for future updates. Our have implemented a simple user interface that displays player status (hunger, thirst, health), weather status, and date in text format. In each in-game day, a series of options (randomly selected from a predefined pool) are displayed to the player, and the player's selection leads to a status update.  
 
 #### Architecture
 
 #### Challenges and Solutions
 
 #### Expectations
+We believe we are at a good place in our development and exepct to complete the game by the deadline. However, during our development, we have made some updates to our goals and designs that would benefit the overall outcome and user experience. 
+
+  1. something
+  2. something
