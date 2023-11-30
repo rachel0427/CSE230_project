@@ -75,8 +75,25 @@ uiStartGame (StartGame st) =
 handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
 handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = liftIO initNewGame >>= continue
 handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
-handleEvent (StartGame (PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
-  continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
+-- handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
+--   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
+
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'w') [])) = do
+  newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
+  continue $ StartGame newPS
+  
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) = do
+  newPS <- liftIO $ updatePlayStatusWithChar 'A' ps
+  continue $ StartGame newPS
+
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 's') [])) = do
+  newPS <- liftIO $ updatePlayStatusWithChar 'S' ps
+  continue $ StartGame newPS
+
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'd') [])) = do
+  newPS <- liftIO $ updatePlayStatusWithChar 'D' ps
+  continue $ StartGame newPS
+
 handleEvent _ _ = continue Menu
 
 -- random generate initial state
