@@ -4,7 +4,7 @@
 ### How to execute the program
 Since we have written a Makefile, you can build and execute the program with 
 ```
-$make
+$ make
 ```
 
 Our goal is to create a survival game. You are stranded on an island. Your goal is to survive for 10 days so that you can be rescued.
@@ -36,7 +36,7 @@ There are various activities for user to choose each day. Different activites co
 ### Interface Design
 The UI will display the bars of survival and a brief prompt that leads the player’s choices, 3-4 text based choices or visual choices (eg. coconut, fish,object icons) will be displayed in the center of the interface. We also plan to have some decorative arts to make the interface more realistic and engaging.
 
-### Update for Milestone 1
+### Update for Milestone 1 (12/1)
 #### Overview
 Over the past weeks, we completed an initial simplified version of our game and set a good foundation for future updates. We have implemented a simple user interface that displays player status (hunger, thirst, health), weather status, and date in text format. In each in-game day, a series of options (randomly selected from a predefined pool) are displayed to the player, and the player's selection leads to a status update.  
 
