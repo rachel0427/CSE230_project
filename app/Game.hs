@@ -17,15 +17,18 @@ getRandomWeather = do
     3 -> return Stormy
     _ -> error "Unexpected random number"
 
--- Update play status based on the chosen activity effects
-updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
-updatePlayStatus gs activity = do
-  (hungerChange, thirstChange, healthChange) <- activityEffects activity
-  let newHunger = max 0 (min 100 (hunger gs + hungerChange))
-  let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
-  let newHealth = max 0 (min 100 (health gs + healthChange))
-  let newAlive = newHealth > 0
-  return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
+
+-- Update the game state based on the chosen activity
+-- updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
+-- updatePlayStatus gs activity = do
+--   (hungerChange, thirstChange, healthChange) <- activityEffects activity
+--   -- Apply changes to PlayStatus
+--   let newHunger = max 0 (min 100 (hunger gs + hungerChange))
+--   let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
+--   let newHealth = max 0 (min 100 (health gs + healthChange))
+--   let newAlive = newHealth > 0
+--   return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
+
 
 -- Check whether player is still alive
 checkAlive :: PlayStatus -> PlayStatus
@@ -57,36 +60,37 @@ weatherPenalty Stormy = (-10, -5) -- Assuming equal hunger and thirst change for
 
 -- Function to update PlayStatus based on the user's input
 updatePlayStatusWithChar :: Char -> PlayStatus -> IO PlayStatus
-updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather _ _ activityMap) = do
-  let (weatherHungerPenalty, weatherThirstPenalty) = weatherPenalty curWeather
+
+updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ _ _ _ activityMap _) =
   case M.lookup char activityMap of
     Just activity -> do
-      (activityHungerChange, activityThirstChange, healthChange) <- activityEffects activity
-      let totalHungerChange = activityHungerChange + weatherHungerPenalty
-          totalThirstChange = activityThirstChange + weatherThirstPenalty
-      applyChanges playStatus totalHungerChange totalThirstChange healthChange
-    Nothing -> return playStatus
+      (hungerChange, thirstChange, healthChange) <- activityEffects activity
+      pt <- applyChanges playStatus hungerChange thirstChange healthChange activity
+      return pt
+    Nothing -> return playStatus -- Return the original status if the character doesn't match any activity
 
-applyChanges :: PlayStatus -> Int -> Int -> Int -> IO PlayStatus
-applyChanges playStatus hungerChange thirstChange healthChange = do
+applyChanges :: PlayStatus -> Int -> Int -> Int -> Activity -> IO PlayStatus
+applyChanges playStatus hungerChange thirstChange healthChange chosenActivity = do
   newActivityMap <- liftIO assignActivitiesToKeys
-  let newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
-      newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
-      newHealth = max 0 (min 100 (health playStatus + healthChange))
-      newAlive = newHealth > 0
+  let
+    newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
+    newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
+    newHealth = max 0 (min 100 (health playStatus + healthChange))
+    newAlive = newHealth > 0
 
-  return
-    ( playStatus
-        { hunger = newHunger,
-          thirsty = newThirst,
-          health = newHealth,
-          alive = newAlive,
-          activityMap = newActivityMap
-        }
-    )
+  return $
+    playStatus
+      { hunger = newHunger,
+        thirsty = newThirst,
+        health = newHealth,
+        alive = newAlive,
+        activityMap = newActivityMap,
+        prevActivity = chosenActivity
+      }
+
 
 getDescription :: PlayStatus -> Char -> String
-getDescription (PlayStatus _ _ _ _ _ _ activityMap) char =
+getDescription (PlayStatus _ _ _ _ _ _ activityMap _) char =
   case M.lookup char activityMap of
     Just activity -> activityText activity
     Nothing -> "No activity found for this key"

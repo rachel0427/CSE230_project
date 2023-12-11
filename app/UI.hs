@@ -13,6 +13,7 @@ import Control.Monad.IO.Class (liftIO)
 
 import Types
 import Game
+import Activity
 
 data UIState = Menu | StartGame PlayStatus deriving (Show, Eq)
 
@@ -65,6 +66,10 @@ uiStartGame (StartGame st) =
             , hCenter $ str $ "Thirsty " ++ show (thirsty st)
             , hCenter $ str $ " "
             ]
+        , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+            [
+              str $ activityText (prevActivity st)           
+            ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
@@ -82,19 +87,19 @@ handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
 -- handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
 --   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'w') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'w') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
   continue $ StartGame newPS
   
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'a') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'A' ps
   continue $ StartGame newPS
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 's') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 's') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'S' ps
   continue $ StartGame newPS
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'd') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'd') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'D' ps
   continue $ StartGame newPS
 
@@ -115,4 +120,5 @@ randomInitNewGame = do
                                 weather = randomWeather, 
                                 date = 1,
                                 alive = True,
-                                activityMap = randomMap }
+                                activityMap = randomMap,
+                                prevActivity = NoActivity }

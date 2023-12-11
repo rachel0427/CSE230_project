@@ -47,6 +47,7 @@ data Activity
   | Hunting HuntingActivity
   | Resting RestingActivity
   | Random RandomActivity
+  | NoActivity
   deriving (Show, Eq)
 
 -- Function to describe each specific activity
@@ -80,6 +81,8 @@ activityText (Random WaterPurifying) = "Drinking purified water is the key to su
 activityText (Random FortuneTelling) = "Predict your future..."
 activityText (Random NightPatrolling) = "Make sure no threats on your survival territory."
 activityText (Random SignalingForHelp) = "Making a huge SOS should improve your chances to be rescued..."
+-- Default starting activity
+activityText NoActivity = "None yet. Pick an activity to start."
 
 ---- helper for activity effects
 
@@ -141,6 +144,10 @@ activityEffects (Random NightPatrolling) =
   generateRandomEffects (-10, 5) (-10, -5) (10, 15)
 activityEffects (Random SignalingForHelp) =
   generateRandomEffects (-20, 5) (-10, -10) (-20, 25)
+
+-- Default starting activity
+activityEffects NoActivity = 
+  generateRandomEffects (0,0) (0,0) (0,0)
 
 -- Generate random activity effects
 generateRandomEffects :: (Int, Int) -> (Int, Int) -> (Int, Int) -> IO ActivityEffects
