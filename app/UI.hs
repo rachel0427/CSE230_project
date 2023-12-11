@@ -4,7 +4,8 @@ module UI where
 import Brick
 import Brick.Widgets.Center (center, hCenter)
 import Brick.Widgets.Border (border, borderWithLabel, borderAttr)
-import Brick.Widgets.Border.Style (unicode)
+import Brick.Widgets.Border.Style (unicode, unicodeBold)
+import qualified Brick.Widgets.Core as Core
 import Control.Monad (void)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
@@ -18,6 +19,8 @@ import Activity
 data UIState = Menu | StartGame PlayStatus | EndGame Int deriving (Show, Eq)
 
 data CustomEvent = StartNewGame | ExitGame deriving (Show, Eq)
+
+data MenuItem = NewGame | Exit deriving (Show, Eq)
 
 type Name = ()
 
@@ -43,36 +46,50 @@ drawUI (StartGame ps) = [uiStartGame (StartGame ps)]
 
 ui :: Widget Name
 ui =
+    -- center $ vLimit 30 $ hLimit 60 $
+    -- borderWithLabel (str "Fancy Game Menu") $
+    --     vBox $
+    --         [ menuItemWidget "New Game" NewGame
+    --         , menuItemWidget "Exit" Exit
+    --         ]
     center $
+    withBorderStyle unicodeBold $
     borderWithLabel (str "Main Menu") $
     hCenter $
     vBox
         [ str "Press 's' to start a new game."
         , str "Press 'q' to exit the game."
         ]
+-- menuItemWidget :: String -> MenuItem -> Widget Name
+-- menuItemWidget label item =
+--     padAll 1 $
+--         hCenter $
+--             Core.clickable (show item) $
+--                 withAttr (attrForItem item) $
+--                     str label
+
+-- attrForItem :: MenuItem -> AttrName
+-- attrForItem NewGame = "menuItemNewGame"
+-- attrForItem Exit = "menuItemExit"
+
+-- -- Utility function to create clickable widgets
+-- clickable :: Name -> Widget n -> Widget n
+-- clickable name content = clickableWidget name content
+
+-- clickableWidget :: Name -> Widget n -> Widget n
+-- clickableWidget name = UI.clickable name ClickableNever
 
 ui2 :: Int -> Widget Name
 ui2 res = 
-    if res == 1
-    then
       center $
+      withBorderStyle unicodeBold $
       borderWithLabel (str "Game Over") $
       hCenter $
       vBox
-          [ str "You win!"
+          [ if res == 1 then (str "You win!") else (str "You lose!")
           , str "Press 'q' to return to the menu."
           ]
-    else
-      center $
-      borderWithLabel (str "Game Over") $
-      hCenter $
-      vBox
-          [ str "You lose!"
-          , str "Press 'q' to return to the menu."
-          ]
--- Function to read ASCII art from a file
--- readArtFromFile :: FilePath -> IO String
--- readArtFromFile filePath = readFile filePath
+
 
 getArtResource :: Weather -> String
 getArtResource weather | weather == Sunny = sunny fixArt
@@ -108,10 +125,6 @@ uiStartGame (StartGame st) =
                 ]
               ]
             ]
-        -- , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
-        --     [
-        --       str $ activityText (prevActivity st)           
-        --     ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
