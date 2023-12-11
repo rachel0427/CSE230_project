@@ -4,7 +4,8 @@ module UI where
 import Brick
 import Brick.Widgets.Center (center, hCenter)
 import Brick.Widgets.Border (border, borderWithLabel, borderAttr)
-import Brick.Widgets.Border.Style (unicode)
+import Brick.Widgets.Border.Style (unicode, unicodeBold)
+import qualified Brick.Widgets.Core as Core
 import Control.Monad (void)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
@@ -15,9 +16,11 @@ import Types
 import Game
 import Activity
 
-data UIState = Menu | StartGame PlayStatus | EndGame deriving (Show, Eq)
+data UIState = Menu | StartGame PlayStatus | EndGame Int deriving (Show, Eq)
 
 data CustomEvent = StartNewGame | ExitGame deriving (Show, Eq)
+
+data MenuItem = NewGame | Exit deriving (Show, Eq)
 
 type Name = ()
 
@@ -27,63 +30,66 @@ dateLimit = 20
 app :: App UIState CustomEvent Name
 app = App
     { appDraw         = drawUI
-    , appChooseCursor = showFirstCursor
+    , appChooseCursor = neverShowCursor
     , appHandleEvent  = handleEvent
     , appStartEvent   = return -- do nothing
     , appAttrMap = const $ attrMap Graphics.Vty.defAttr []
     }
 
 initNewGame :: IO UIState
--- initNewGame = StartGame PlayStatus {hunger = 0, thirsty = 0, health = 100, weather = Sunny, date = 1}
 initNewGame = randomInitNewGame
 
 drawUI :: UIState -> [Widget Name]
 drawUI Menu = [ui]
-drawUI EndGame = [ui2]
--- drawUI initNewGame = [uiStartGame initNewGame]
-drawUI st = [uiStartGame st]
+drawUI (EndGame res) = [ui2 res]
+drawUI (StartGame ps) = [uiStartGame (StartGame ps)]
 
 ui :: Widget Name
 ui =
+    -- center $ vLimit 30 $ hLimit 60 $
+    -- borderWithLabel (str "Fancy Game Menu") $
+    --     vBox $
+    --         [ menuItemWidget "New Game" NewGame
+    --         , menuItemWidget "Exit" Exit
+    --         ]
     center $
+    withBorderStyle unicodeBold $
     borderWithLabel (str "Main Menu") $
     hCenter $
     vBox
         [ str "Press 's' to start a new game."
         , str "Press 'q' to exit the game."
         ]
+-- menuItemWidget :: String -> MenuItem -> Widget Name
+-- menuItemWidget label item =
+--     padAll 1 $
+--         hCenter $
+--             Core.clickable (show item) $
+--                 withAttr (attrForItem item) $
+--                     str label
 
--- ui2 :: Int -> Widget Name
-ui2 :: Widget Name
-ui2 = 
-    center $
-    borderWithLabel (str "Game Over") $
-    hCenter $
-    vBox
-        [ str "You win!"
-        , str "Press 'q' to return to the menu."
-        ]
--- ui2 res = 
---     if res == 1
---     then
---       center $
---       borderWithLabel (str "Game Over") $
---       hCenter $
---       vBox
---           [ str "You win!"
---           , str "Press 'q' to return to the menu."
---           ]
---     else
---       center $
---       borderWithLabel (str "Game Over") $
---       hCenter $
---       vBox
---           [ str "You lose!"
---           , str "Press 'q' to return to the menu."
---           ]
--- Function to read ASCII art from a file
--- readArtFromFile :: FilePath -> IO String
--- readArtFromFile filePath = readFile filePath
+-- attrForItem :: MenuItem -> AttrName
+-- attrForItem NewGame = "menuItemNewGame"
+-- attrForItem Exit = "menuItemExit"
+
+-- -- Utility function to create clickable widgets
+-- clickable :: Name -> Widget n -> Widget n
+-- clickable name content = clickableWidget name content
+
+-- clickableWidget :: Name -> Widget n -> Widget n
+-- clickableWidget name = UI.clickable name ClickableNever
+
+ui2 :: Int -> Widget Name
+ui2 res = 
+      center $
+      withBorderStyle unicodeBold $
+      borderWithLabel (str "Game Over") $
+      hCenter $
+      vBox
+          [ if res == 1 then (str "You win!") else (str "You lose!")
+          , str "Press 'q' to return to the menu."
+          ]
+
 
 getArtResource :: Weather -> String
 getArtResource weather | weather == Sunny = sunny fixArt
@@ -119,10 +125,6 @@ uiStartGame (StartGame st) =
                 ]
               ]
             ]
-        -- , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
-        --     [
-        --       str $ activityText (prevActivity st)           
-        --     ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
@@ -137,38 +139,47 @@ uiStartGame (StartGame st) =
 handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UIState)
 handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = liftIO initNewGame >>= continue
 handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
+handleEvent Menu _ = continue Menu
 -- handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
 --   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'w') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
-  if alive newPS == False || date newPS >= dateLimit
-  then continue EndGame
+  if not (alive newPS)
+  then continue $ EndGame 0
+  else if date newPS >= dateLimit
+  then continue $ EndGame 1
   else continue $ StartGame newPS
   
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'a') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'A' ps
-  if alive newPS == False || date newPS >= dateLimit
-  then continue EndGame
+  if not (alive newPS)
+  then continue $ EndGame 0
+  else if date newPS >= dateLimit
+  then continue $ EndGame 1
   else continue $ StartGame newPS
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 's') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'S' ps
-  if alive newPS == False || date newPS >= dateLimit
-  then continue EndGame
+  if not (alive newPS)
+  then continue $ EndGame 0
+  else if date newPS >= dateLimit
+  then continue $ EndGame 1
   else continue $ StartGame newPS
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'd') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'D' ps
-  if alive newPS == False || date newPS >= dateLimit
-  then continue EndGame
+  if not (alive newPS)
+  then continue $ EndGame 0
+  else if date newPS >= dateLimit
+  then continue $ EndGame 1
   else continue $ StartGame newPS
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'q') [])) = continue Menu
-
 handleEvent st@(StartGame ps) _ = continue st
 
-handleEvent EndGame (VtyEvent (EvKey (KChar 'q') [])) = continue Menu
+handleEvent (EndGame _) (VtyEvent (EvKey (KChar 'q') [])) = continue Menu
+handleEvent (EndGame res) _ = continue $ EndGame res
 
 -- random generate initial state
 randomInitNewGame :: IO UIState
