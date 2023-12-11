@@ -51,9 +51,9 @@ assignActivitiesToKeys = do
 
 -- Calculate the weather-based penalty (Hunger, Thirst)
 weatherPenalty :: Weather -> (Int, Int)
-weatherPenalty Sunny = (-10, -10)
-weatherPenalty Rainy = (-10, -5) -- Assuming no thirst change for Rainy
-weatherPenalty Cloudy = (-10, -5) -- Assuming equal hunger and thirst change for Stormy
+weatherPenalty Sunny = (-7, -7)
+weatherPenalty Rainy = (-10, 5) -- Assuming no thirst change for Rainy
+weatherPenalty Cloudy = (-10, -2) -- Assuming equal hunger and thirst change for Stormy
 
 -- Calculate health change based on hunger and thirst
 calculateHealthChange :: Int -> Int -> Int -> Int
