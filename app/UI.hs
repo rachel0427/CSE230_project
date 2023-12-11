@@ -104,7 +104,8 @@ uiStartGame (StartGame st) =
         characterResource = " (*.*)/  \n" ++ " <)  )  \n" ++ "  /  \\  \n" -- Replace this with your character representation
         -- characterWidget = withBorderStyle unicode $ strWrap characterResource       
     in
-    center $ vLimit 100 $ hLimit 100 $
+    center $ vLimit 150 $ hLimit 200 $
+    withBorderStyle unicodeBold $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
@@ -119,7 +120,7 @@ uiStartGame (StartGame st) =
                       ], withBorderStyle unicode $ strWrap characterResource], 
                       center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
                       [
-                        str $ activityText (prevActivity st)           
+                        vBox [str $ activityText (prevActivity st), hCenter $ str $ " "]           
                       ]
                     ]  
                 ]
