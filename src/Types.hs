@@ -6,6 +6,8 @@ import Activity
 -- Define the weather data type
 data Weather = Sunny | Rainy | Cloudy deriving (Show, Eq)
 
+type Res = Int
+
 data PlayStatus = PlayStatus
                     { hunger  :: Int   -- range [0, 100]
                     , thirsty :: Int   -- range [0, 100]
@@ -38,12 +40,12 @@ data Art = Art {
                   , cloudy :: String
                 }
 
-fixArt = Art {sunny = "                   \\       /            _\\/_\n" ++
-                     ".-'-.              //o\\  _\\/_\n" ++
-  "_  ___  __  _ --_ /     \\ _--_ __  __ _ | __/o\\\\ _\n" ++
-"=-=-_=-=-_=-=_=-_= -=======- = =-=_=-=_,-'|\"'\"\"-|-,_\n" ++ 
-"=- _=-=-_=- _=-= _--=====- _=-=_-_,-\"          |",
-rainy = "      __   _\n" ++
+fixArt = Art {sunny = "       \\ \\ | / /       \n" ++
+"         .-'-.         \n" ++
+"  _ --_ /     \\ _--_ __ \n" ++
+"=_=-_= -=======- = =-=_\n" ++
+" _=-= _--=====- _=-=_-_\n",
+rainy = "  __   _\n" ++
     "_(  )_( )_\n" ++
    "(_   _    _)\n" ++
   "/ /(_) (__)\n" ++
