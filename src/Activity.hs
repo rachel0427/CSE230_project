@@ -102,15 +102,15 @@ activityText (Hunting SpearFishing) = "Stab a fish with your spear near the cora
 -- Resting
 activityText (Resting StarGazing) = "Look up at the sky and contemplate your survival..."
 activityText (Resting Meditating) = "Close your eyes and think..."
-activityText (Resting Daydreaming) = "Take some time to daydream what it feels like to be at home"
-activityText (Resting SunBathing) = "Absorb energy form sunbathing"
-activityText (Resting Yoga) = "Feeling Down? Do some Yoga"
-activityText (Resting Sleeping) = "Sleeping is always the most effective way to refill and recharge"
-activityText (Resting ListenToNature) = "Sit silently and listen to the sounds of nature"
-activityText (Resting SandCastleBuilding) = "Get on the beach and build a sand castle"
-activityText (Resting Planning) = "Lay down and plan your next days"
-activityText (Resting SandPainting) = "Paint a picture on the sand"
-activityText (Resting Grade) = "Calculate your CSE230 final grade"
+activityText (Resting Daydreaming) = "Take some time to daydream what it feels like to be at home."
+activityText (Resting SunBathing) = "Absorb energy form sunbathing."
+activityText (Resting Yoga) = "Feeling Down? Do some Yoga."
+activityText (Resting Sleeping) = "Sleeping is always the most effective way to refill and recharge."
+activityText (Resting ListenToNature) = "Sit silently and listen to the sounds of nature."
+activityText (Resting SandCastleBuilding) = "Get on the beach and build a sand castle."
+activityText (Resting Planning) = "Lay down and plan your next days."
+activityText (Resting SandPainting) = "Paint a picture on the sand."
+activityText (Resting Grade) = "Calculate your CSE230 final grade."
 -- Random
 activityText (Random BuildTent) = "Build a comfy tent."
 activityText (Random MakeFire) = "Make a fire to keep you warm."
@@ -120,7 +120,7 @@ activityText (Random WaterPurifying) = "Drinking purified water is the key to su
 activityText (Random FortuneTelling) = "Predict your future..."
 activityText (Random NightPatrolling) = "Make sure no threats on your survival territory."
 activityText (Random SignalingForHelp) = "Making a huge SOS should improve your chances to be rescued..."
-activityText (Random ExploreUnkonwn) = "Get out of your comfort zone and explore the wider nature"
+activityText (Random ExploreUnkonwn) = "Get out of your comfort zone and explore the wider nature."
 
 -- Default starting activity
 activityText NoActivity = "None yet. Pick an activity to start."

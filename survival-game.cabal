@@ -6,13 +6,15 @@ cabal-version:       >=1.10
 library 
   exposed-modules:     Types
                      , Activity
-  hs-source-dirs:      src
+                     , Game
+  hs-source-dirs:      src, app
   build-depends:       base >=4.14 && <5
                      , brick
                      , random
                      , random-shuffle
                      , vty
                      , containers
+                     , QuickCheck
   default-language:    Haskell2010
 
 executable survival-game
@@ -28,4 +30,5 @@ executable survival-game
                      , vty
                      , containers
                      , survival-game
+                     , QuickCheck
   default-language:    Haskell2010
