@@ -31,3 +31,25 @@ demoOption = Option { op1 = "Search for edible mushrooms in the forest."
              , op2 = "Hunt small animals like rabbits or squirrels."
              , op3 = "Look up at the sky and contemplate your survival..."
              , op4 = "Make a fire to keep you warm."}
+
+data Art = Art {
+                    sunny :: String 
+                  , rainy :: String
+                  , cloudy :: String
+                }
+
+fixArt = Art {sunny = "                   \\       /            _\\/_\n" ++
+                     ".-'-.              //o\\  _\\/_\n" ++
+  "_  ___  __  _ --_ /     \\ _--_ __  __ _ | __/o\\\\ _\n" ++
+"=-=-_=-=-_=-=_=-_= -=======- = =-=_=-=_,-'|\"'\"\"-|-,_\n" ++ 
+"=- _=-=-_=- _=-= _--=====- _=-=_-_,-\"          |",
+rainy = "      __   _\n" ++
+    "_(  )_( )_\n" ++
+   "(_   _    _)\n" ++
+  "/ /(_) (__)\n" ++
+ "/ / / / / /\n" ++
+"/ / / / / /",
+cloudy = "   __   _\n" ++
+" _(  )_( )_\n" ++
+"(_   _    _)\n" ++
+"  (_) (__)\n"}
