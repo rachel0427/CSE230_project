@@ -14,6 +14,7 @@ data PlayStatus = PlayStatus
                     , date :: Int      -- range [1, 10]
                     , alive :: Bool
                     , activityMap :: M.Map Char Activity
+                    , prevActivity :: Activity
                     } deriving (Show, Eq)
 
 data Option = Option 

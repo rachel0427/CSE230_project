@@ -3,7 +3,7 @@ module UI where
 
 import Brick
 import Brick.Widgets.Center (center, hCenter)
-import Brick.Widgets.Border (border, borderWithLabel)
+import Brick.Widgets.Border (border, borderWithLabel, borderAttr)
 import Brick.Widgets.Border.Style (unicode)
 import Control.Monad (void)
 import Graphics.Vty
@@ -13,6 +13,7 @@ import Control.Monad.IO.Class (liftIO)
 
 import Types
 import Game
+import Activity
 
 data UIState = Menu | StartGame PlayStatus deriving (Show, Eq)
 
@@ -50,20 +51,27 @@ ui =
 
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
-    let textArtResource = ""
-    in
-    let image = string defAttr textArtResource
+    let textArtResource = "   O\n  /|\\\n  / \\\n" -- Replace this with your character representation
+        characterWidget = withBorderStyle unicode $ borderWithLabel (str "Character") $ strWrap textArtResource
     in
     center $ vLimit 100 $ hLimit 100 $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
-        [ vBox [str (" Weather: " ++ show (weather st)), raw image]
-          , center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
-            [ hCenter $ str $ "Health " ++ show (health st)
-            , hCenter $ str $ "Hunger " ++ show (hunger st)
-            , hCenter $ str $ "Thirsty " ++ show (thirsty st)
-            , hCenter $ str $ " "
+        [ hBox -- Use hBox to horizontally concatenate widgets
+            [ vBox [str (" Weather: " ++ show (weather st))]
+            , hBox
+              [characterWidget, center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
+                [ hCenter $ str $ "Health " ++ show (health st)
+                , hCenter $ str $ "Hunger " ++ show (hunger st)
+                , hCenter $ str $ "Thirsty " ++ show (thirsty st)
+                , hCenter $ str $ " "
+                ]
+              ]
+            ]
+        , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+            [
+              str $ activityText (prevActivity st)           
             ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
@@ -73,6 +81,33 @@ uiStartGame (StartGame st) =
             , hCenter $ str $ " "
             ]
         ]
+
+
+
+-- uiStartGame (StartGame st) = 
+--     let textArtResource = ""
+--     in
+--     let image = string defAttr textArtResource
+--     in
+--     center $ vLimit 100 $ hLimit 100 $
+--     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
+--     hCenter $
+--     vBox
+--         [ vBox [str (" Weather: " ++ show (weather st)), raw image]
+--           , center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
+--             [ hCenter $ str $ "Health " ++ show (health st)
+--             , hCenter $ str $ "Hunger " ++ show (hunger st)
+--             , hCenter $ str $ "Thirsty " ++ show (thirsty st)
+--             , hCenter $ str $ " "
+--             ]
+--         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
+--             [ str $ "w. " ++ (getDescription st 'W')
+--             , str $ "a. " ++ (getDescription st 'A')
+--             , str $ "s. " ++ (getDescription st 'S')
+--             , str $ "d. " ++ (getDescription st 'D')
+--             , hCenter $ str $ " "
+--             ]
+--         ]
       
 
 
@@ -82,23 +117,24 @@ handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
 -- handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
 --   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'w') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'w') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
   continue $ StartGame newPS
   
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'a') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'A' ps
   continue $ StartGame newPS
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 's') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 's') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'S' ps
   continue $ StartGame newPS
 
-handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'd') [])) = do
+handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM prev)) (VtyEvent (EvKey (KChar 'd') [])) = do
   newPS <- liftIO $ updatePlayStatusWithChar 'D' ps
   continue $ StartGame newPS
 
 handleEvent _ _ = continue Menu
+
 
 -- random generate initial state
 randomInitNewGame :: IO UIState
@@ -115,4 +151,5 @@ randomInitNewGame = do
                                 weather = randomWeather, 
                                 date = 1,
                                 alive = True,
-                                activityMap = randomMap }
+                                activityMap = randomMap,
+                                prevActivity = NoActivity }

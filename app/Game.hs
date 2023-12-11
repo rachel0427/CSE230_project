@@ -65,20 +65,20 @@ calculateHealthChange health hunger thirst
 
 -- Function to update PlayStatus based on the user's input
 updatePlayStatusWithChar :: Char -> PlayStatus -> IO PlayStatus
-updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather curDate _ activityMap) = do
+updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather curDate _ activityMap _) = do
   let (weatherHungerPenalty, weatherThirstPenalty) = weatherPenalty curWeather
   case M.lookup char activityMap of
     Just activity -> do
       (activityHungerChange, activityThirstChange, healthChange) <- activityEffects activity
       let totalHungerChange = activityHungerChange + weatherHungerPenalty
           totalThirstChange = activityThirstChange + weatherThirstPenalty
-      applyChanges playStatus totalHungerChange totalThirstChange healthChange curDate
+      applyChanges playStatus totalHungerChange totalThirstChange healthChange curDate activity
     Nothing -> return playStatus
 
 
 
-applyChanges :: PlayStatus -> Int -> Int -> Int -> Int -> IO PlayStatus
-applyChanges playStatus hungerChange thirstChange healthChange curDate= do
+applyChanges :: PlayStatus -> Int -> Int -> Int -> Int -> Activity -> IO PlayStatus
+applyChanges playStatus hungerChange thirstChange healthChange curDate chosenActivity= do
   newActivityMap <- liftIO assignActivitiesToKeys
   newWeather <-  getRandomWeather
   let newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
@@ -97,12 +97,13 @@ applyChanges playStatus hungerChange thirstChange healthChange curDate= do
           alive = newAlive,
           date = newDate,
           weather = newWeather,
-          activityMap = newActivityMap
+          activityMap = newActivityMap,
+          prevActivity = chosenActivity
         }
     )
 
 getDescription :: PlayStatus -> Char -> String
-getDescription (PlayStatus _ _ _ _ _ _ activityMap) char =
+getDescription (PlayStatus _ _ _ _ _ _ activityMap _) char =
   case M.lookup char activityMap of
     Just activity -> activityText activity
     Nothing -> "No activity found for this key"
