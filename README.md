@@ -22,7 +22,7 @@ On each game day, a type of weather will be randomly generated. Depending on the
 
   Rainy day – hunger bar decreases faster
 
-  Stormy day – health bar decreases faster
+  Cloudy day – health bar decreases faster
 
 #### Examples of Activities 
 There are various activities for user to choose each day. Different activites consume varying units of time and have different effects on the character's state. Here are some examples:

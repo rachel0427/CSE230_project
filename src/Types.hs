@@ -4,7 +4,7 @@ import Data.Map as M
 import Activity
 
 -- Define the weather data type
-data Weather = Sunny | Rainy | Stormy deriving (Show, Eq)
+data Weather = Sunny | Rainy | Cloudy deriving (Show, Eq)
 
 data PlayStatus = PlayStatus
                     { hunger  :: Int   -- range [0, 100]
