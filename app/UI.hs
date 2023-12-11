@@ -49,30 +49,51 @@ ui =
         , str "Press 'q' to exit the game."
         ]
 
+-- Function to read ASCII art from a file
+readArtFromFile :: FilePath -> IO String
+readArtFromFile filePath = readFile filePath
+
+getArtResource :: Weather -> String
+getArtResource weather | weather == Sunny = sunny fixArt
+                       | weather == Rainy = rainy fixArt
+                       | otherwise = cloudy fixArt
+                      --  | weather == Cloudy = rainy fixArt
+
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
-    let textArtResource = "   O\n  /|\\\n  / \\\n" -- Replace this with your character representation
-        characterWidget = withBorderStyle unicode $ borderWithLabel (str "Character") $ strWrap textArtResource
+    let textArtResource = getArtResource (weather st) -- Replace this with your character representation
+        weatherWidget = withBorderStyle unicode $ strWrap textArtResource
+        
     in
+    -- let textArtResource = " (*.*)/  \n" ++ " <)  )  \n" ++ "  /  \\  \n" -- Replace this with your character representation
+    --     weatherWidget = withBorderStyle unicode $ strWrap textArtResource
+        
+    -- in
     center $ vLimit 100 $ hLimit 100 $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
         [ hBox -- Use hBox to horizontally concatenate widgets
-            [ vBox [str (" Weather: " ++ show (weather st))]
-            , hBox
-              [characterWidget, center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
-                [ hCenter $ str $ "Health " ++ show (health st)
-                , hCenter $ str $ "Hunger " ++ show (hunger st)
-                , hCenter $ str $ "Thirsty " ++ show (thirsty st)
-                , hCenter $ str $ " "
+            [ vBox [str (" Weather: " ++ show (weather st))
+              , hBox
+                [weatherWidget, vBox [center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ hBox [vBox
+                      [ hCenter $ str $ "Health " ++ show (health st)
+                      , hCenter $ str $ "Hunger " ++ show (hunger st)
+                      , hCenter $ str $ "Thirsty " ++ show (thirsty st)
+                      , hCenter $ str $ " "
+                      ], withBorderStyle unicode $ strWrap textArtResource], 
+                      center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+                      [
+                        str $ activityText (prevActivity st)           
+                      ]
+                    ]  
                 ]
               ]
             ]
-        , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
-            [
-              str $ activityText (prevActivity st)           
-            ]
+        -- , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+        --     [
+        --       str $ activityText (prevActivity st)           
+        --     ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
@@ -81,33 +102,6 @@ uiStartGame (StartGame st) =
             , hCenter $ str $ " "
             ]
         ]
-
-
-
--- uiStartGame (StartGame st) = 
---     let textArtResource = ""
---     in
---     let image = string defAttr textArtResource
---     in
---     center $ vLimit 100 $ hLimit 100 $
---     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
---     hCenter $
---     vBox
---         [ vBox [str (" Weather: " ++ show (weather st)), raw image]
---           , center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ vBox
---             [ hCenter $ str $ "Health " ++ show (health st)
---             , hCenter $ str $ "Hunger " ++ show (hunger st)
---             , hCenter $ str $ "Thirsty " ++ show (thirsty st)
---             , hCenter $ str $ " "
---             ]
---         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
---             [ str $ "w. " ++ (getDescription st 'W')
---             , str $ "a. " ++ (getDescription st 'A')
---             , str $ "s. " ++ (getDescription st 'S')
---             , str $ "d. " ++ (getDescription st 'D')
---             , hCenter $ str $ " "
---             ]
---         ]
       
 
 
