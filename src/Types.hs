@@ -3,6 +3,7 @@ import Brick
 import Data.Map as M
 import Activity
 import Graphics.Vty
+import Brick.Widgets.Center
 
 -- Define the weather data type
 data Weather = Sunny | Rainy | Cloudy deriving (Show, Eq)
@@ -64,22 +65,25 @@ data ArtWidget = ArtW {
                   , rainyW :: Widget ()
                   , cloudyW :: Widget ()
                 }
--- fixArtWidget = ArtW {sunnyW = withAttr attrBlue $ withBorderStyle unicode $ str "                   \\       /" <|> withAttr attrGreen $ str "            _\\/_\n" <=>
---                      str ".-'-.              //o\\  _\\/_\n" <=>
---  str "_  ___  __  _ --_ /     \\ _--_ __  __ _ | __/o\\\\ _\n" <=>
--- str "=-=-_=-=-_=-=_=-_= -=======- = =-=_=-=_,-'|\"'\"\"-|-,_\n" <=>
--- str "=- _=-=-_=- _=-= _--=====- _=-=_-_,-\"          |",
--- rainyW = withAttr attrWhite $ str "      __   _\n" <=>
---     withAttr attrWhite $ str "_(  )_( )_\n" <=>
---     withAttr attrWhite $ str "(_   _    _)\n" <=>
---     withAttr attrBlue $ str "/ /" <|> withAttr attrWhite $ str "(_) (__)\n" <=>
---     withAttr attrBlue $ str "/ / / / / /\n" <=>
---     withAttr attrBlue $ str "/ / / / / /",
--- cloudyW = withAttr attrWhite $ str "   __   _\n" <=>
---     withAttr attrWhite $ str " _(  )_( )_\n" <=>
---     withAttr attrWhite $ str "(_   _    _)\n" <=>
---     withAttr attrWhite $ str "  (_) (__)\n"}
-
+fixArtWidget = ArtW { sunnyW = vBox [withAttr attrRed $ str $ "       \\ \\ | / /       \n",
+                                withAttr attrRed $ str $ "         .-'-.         \n",
+                                hBox [withAttr attrBlue $ str $ "  _ --_ ", withAttr attrRed $ str $ "/     \\" ,withAttr attrBlue $ str $ " _--_ __ \n"],
+                                withAttr attrBlue $ str $ "=_=-_= -=======- = =-=_\n",
+                                withAttr attrBlue $ str $ " _=-= _--=====- _=-=_-_\n",
+                                hCenter $ str $ " " ],
+                      rainyW = vBox [withAttr attrWhite $ str "   __   _\n",
+                          withAttr attrWhite $ str " _(  )_( )_\n",
+                          withAttr attrWhite $ str "(_   _    _)\n",
+                          hBox [withAttr attrBlue $ str "/ /", withAttr attrWhite $ str "(_) (__)\n"],
+                          withAttr attrBlue $ str "/ / / / / /\n",
+                          withAttr attrBlue $ str "/ / / / / /",
+                          hCenter $ str $ " "],
+                      cloudyW = vBox [withAttr attrWhite $ str "   __   _\n",
+                          withAttr attrWhite $ str " _(  )_( )_\n",
+                          withAttr attrWhite $ str "(_   _    _)\n",
+                          withAttr attrWhite $ str "  (_) (__)\n",
+                          hCenter $ str $ " "]
+}
 
 
 -- Colors

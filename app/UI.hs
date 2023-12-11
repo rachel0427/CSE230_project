@@ -49,12 +49,6 @@ drawUI (StartGame ps) = [uiStartGame (StartGame ps)]
 
 ui :: Widget Name
 ui =
-    -- center $ vLimit 30 $ hLimit 60 $
-    -- borderWithLabel (str "Fancy Game Menu") $
-    --     vBox $
-    --         [ menuItemWidget "New Game" NewGame
-    --         , menuItemWidget "Exit" Exit
-    --         ]
     center $
     withAttr attrWhite $
     withBorderStyle unicodeBold $
@@ -96,48 +90,40 @@ ui2 res =
           ]
 
 
-getArtResource :: Weather -> String
-getArtResource weather | weather == Sunny = sunny fixArt
-                       | weather == Rainy = rainy fixArt
-                       | otherwise = cloudy fixArt
-                      --  | weather == Cloudy = rainy fixArt
 
--- getArtResource :: Weather -> Widget Name
--- getArtResource weather | weather == Sunny = sunnyW fixArtWidget
---                        | weather == Rainy = rainyW fixArtWidget
---                        | otherwise = cloudyW fixArtWidget
+getArtResource :: Weather -> Widget Name
+getArtResource weather | weather == Sunny = sunnyW fixArtWidget
+                       | weather == Rainy = rainyW fixArtWidget
+                       | otherwise = cloudyW fixArtWidget
 
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
-    -- let weatherWidget = getArtResource (weather st) -- Replace this with your character representation
-    let textArtResource = getArtResource (weather st) -- Replace this with your character representation
-        weatherWidget = withBorderStyle unicode $ strWrap textArtResource
-        characterResource = " (*.*)/  \n" ++ " <)  )  \n" ++ "  /  \\  \n" -- Replace this with your character representation
-        -- characterWidget = withBorderStyle unicode $ strWrap characterResource       
+    let weatherWidget = getArtResource (weather st)
+        characterResource = " (*.*)/  \n" ++ " <)  )  \n" ++ "  /  \\  \n"       
     in
-    center $ vLimit 100 $ hLimit 100 $
+    center $ vLimit 150 $ hLimit 200 $
     withAttr attrWhite $
     withBorderStyle unicodeBold $
-    borderWithLabel (str $ "Days survived: " ++ show (date st)) $
+    borderWithLabel (str $ " Days survived: " ++ show (date st) ++ " ") $
     hCenter $
     vBox
         [ hBox -- Use hBox to horizontally concatenate widgets
             [ vBox [str (" Weather: " ++ show (weather st))
               , hBox
-                [weatherWidget, vBox [center $ vLimit 20 $ withAttr attrGreen $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ hBox [vBox
+                [str "  ", weatherWidget, vBox [center $ vLimit 20 $ withAttr attrGreen $ borderWithLabel (str " Character Status ") $ padTop (Pad 1) $ hBox [vBox
                       [ hCenter $ str $ "Health: " ++ show (health st)
                       , hCenter $ str $ "Hunger: " ++ show (hunger st)
                       , hCenter $ str $ "Thirsty: " ++ show (thirsty st)
                       , hCenter $ str $ " "
-                      ], withBorderStyle unicode $ strWrap characterResource], 
-                      center $ vLimit 20 $ withAttr attrBlue $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+                      ], withBorderStyle unicode $ withAttr attrLilac $ strWrap characterResource], 
+                      center $ vLimit 20 $ withAttr attrBlue $ borderWithLabel (str " Previous action ") $ padTop (Pad 1) $ vBox
                       [ strWrap $ activityText (prevActivity st)
                       ] 
                     ]  
                 ]
               ]
             ]
-        , center $ vLimit 20 $ withAttr attrLilac $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
+        , center $ vLimit 20 $ withAttr attrLilac $ borderWithLabel (str " Select an action: ") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
             , str $ "s. " ++ (getDescription st 'S')
