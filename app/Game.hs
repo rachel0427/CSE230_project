@@ -52,7 +52,7 @@ assignActivitiesToKeys = do
 -- Calculate the weather-based penalty (Hunger, Thirst)
 weatherPenalty :: Weather -> (Int, Int)
 weatherPenalty Sunny = (-7, -7)
-weatherPenalty Rainy = (-10, 5) -- Assuming no thirst change for Rainy
+weatherPenalty Rainy = (-5, 5) -- Assuming no thirst change for Rainy
 weatherPenalty Cloudy = (-10, -2) -- Assuming equal hunger and thirst change for Stormy
 
 -- Calculate health change based on hunger and thirst
@@ -83,7 +83,7 @@ applyChanges playStatus hungerChange thirstChange healthChange curDate chosenAct
   newWeather <-  getRandomWeather
   let newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
       newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
-      newHealth = max 0 (min 100 (calculateHealthChange (health playStatus) newHunger newThirst))
+      newHealth = max 0 (min 100 (calculateHealthChange (health playStatus) newHunger newThirst + healthChange))
       newAlive = newHealth > 0
       newDate = curDate + 1
 
