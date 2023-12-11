@@ -27,7 +27,10 @@ app = App
     , appChooseCursor = showFirstCursor
     , appHandleEvent  = handleEvent
     , appStartEvent   = return -- do nothing
-    , appAttrMap = const $ attrMap Graphics.Vty.defAttr []
+    , appAttrMap = const $ attrMap (bg oliveGreen) 
+                    [ (attrBlue, fg cerulean), (attrGreen, fg yellowGreen), (attrWhite, fg offWhite), (attrRed, fg red)
+                    , (attrLilac, fg lilac)]
+    -- const $ attrMap Graphics.Vty.defAttr
     }
 
 initNewGame :: IO UIState
@@ -42,11 +45,12 @@ drawUI st = [uiStartGame st]
 ui :: Widget Name
 ui =
     center $
+    withAttr attrWhite $
     borderWithLabel (str "Main Menu") $
     hCenter $
     vBox
-        [ str "Press 's' to start a new game."
-        , str "Press 'q' to exit the game."
+        [ withAttr attrGreen $ str "Press 's' to start a new game."
+        , withAttr attrRed $ str "Press 'q' to exit the game."
         ]
 
 -- Function to read ASCII art from a file
@@ -59,10 +63,16 @@ getArtResource weather | weather == Sunny = sunny fixArt
                        | otherwise = cloudy fixArt
                       --  | weather == Cloudy = rainy fixArt
 
+-- getArtResource :: Weather -> Widget Name
+-- getArtResource weather | weather == Sunny = sunnyW fixArtWidget
+--                        | weather == Rainy = rainyW fixArtWidget
+--                        | otherwise = cloudyW fixArtWidget
+
 uiStartGame :: UIState -> Widget Name 
 uiStartGame (StartGame st) = 
+    -- let weatherWidget = getArtResource (weather st) -- Replace this with your character representation
     let textArtResource = getArtResource (weather st) -- Replace this with your character representation
-        weatherWidget = withBorderStyle unicode $ strWrap textArtResource
+        weatherWidget = withAttr attrBlue $ withBorderStyle unicode $ strWrap textArtResource
         
     in
     -- let textArtResource = " (*.*)/  \n" ++ " <)  )  \n" ++ "  /  \\  \n" -- Replace this with your character representation
@@ -70,32 +80,34 @@ uiStartGame (StartGame st) =
         
     -- in
     center $ vLimit 100 $ hLimit 100 $
+    withAttr attrWhite $
     borderWithLabel (str $ "Days survived: " ++ show (date st)) $
     hCenter $
     vBox
         [ hBox -- Use hBox to horizontally concatenate widgets
             [ vBox [str (" Weather: " ++ show (weather st))
               , hBox
-                [weatherWidget, vBox [center $ vLimit 20 $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ hBox [vBox
-                      [ hCenter $ str $ "Health " ++ show (health st)
-                      , hCenter $ str $ "Hunger " ++ show (hunger st)
-                      , hCenter $ str $ "Thirsty " ++ show (thirsty st)
+                [weatherWidget, vBox [center $ vLimit 20 $ withAttr attrGreen $ borderWithLabel (str "Character Status") $ padTop (Pad 1) $ hBox [vBox
+                      [ hCenter $ str $ "Health: " ++ show (health st)
+                      , hCenter $ str $ "Hunger: " ++ show (hunger st)
+                      , hCenter $ str $ "Thirsty: " ++ show (thirsty st)
                       , hCenter $ str $ " "
                       ], withBorderStyle unicode $ strWrap textArtResource], 
-                      center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
+                      center $ vLimit 20 $ withAttr attrBlue $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
                       [ strWrap $ activityText (prevActivity st)
-                      ]
+                      ] 
                     ]  
                 ]
               ]
             ]
-        , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
+        , center $ vLimit 20 $ withAttr attrLilac $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
             , str $ "s. " ++ (getDescription st 'S')
             , str $ "d. " ++ (getDescription st 'D')
             , hCenter $ str $ " "
             ]
+        , withAttr attrRed $ str "Press 'q' to return to main menu."
         ]
       
 
