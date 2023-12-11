@@ -14,18 +14,18 @@ getRandomWeather = do
   case rand of
     1 -> return Sunny
     2 -> return Rainy
-    3 -> return Stormy
+    3 -> return Cloudy
     _ -> error "Unexpected random number"
 
 -- Update play status based on the chosen activity effects
-updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
-updatePlayStatus gs activity = do
-  (hungerChange, thirstChange, healthChange) <- activityEffects activity
-  let newHunger = max 0 (min 100 (hunger gs + hungerChange))
-  let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
-  let newHealth = max 0 (min 100 (health gs + healthChange))
-  let newAlive = newHealth > 0
-  return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
+-- updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
+-- updatePlayStatus gs activity = do
+--   (hungerChange, thirstChange, healthChange) <- activityEffects activity
+--   let newHunger = max 0 (min 100 (hunger gs + hungerChange))
+--   let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
+--   let newHealth = max 0 (min 100 (health gs + healthChange))
+--   let newAlive = newHealth > 0
+--   return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
 
 -- Check whether player is still alive
 checkAlive :: PlayStatus -> PlayStatus
@@ -53,27 +53,41 @@ assignActivitiesToKeys = do
 weatherPenalty :: Weather -> (Int, Int)
 weatherPenalty Sunny = (-10, -10)
 weatherPenalty Rainy = (-10, -5) -- Assuming no thirst change for Rainy
-weatherPenalty Stormy = (-10, -5) -- Assuming equal hunger and thirst change for Stormy
+weatherPenalty Cloudy = (-10, -5) -- Assuming equal hunger and thirst change for Stormy
+
+-- Calculate health change based on hunger and thirst
+calculateHealthChange :: Int -> Int -> Int -> Int
+calculateHealthChange health hunger thirst
+  | hunger == 0 && thirst == 0 = health - 15
+  | hunger == 0 = health - 10
+  | thirst == 0 = health - 5
+  | otherwise = health
 
 -- Function to update PlayStatus based on the user's input
 updatePlayStatusWithChar :: Char -> PlayStatus -> IO PlayStatus
-updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather _ _ activityMap) = do
+updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather curDate _ activityMap) = do
   let (weatherHungerPenalty, weatherThirstPenalty) = weatherPenalty curWeather
   case M.lookup char activityMap of
     Just activity -> do
       (activityHungerChange, activityThirstChange, healthChange) <- activityEffects activity
       let totalHungerChange = activityHungerChange + weatherHungerPenalty
           totalThirstChange = activityThirstChange + weatherThirstPenalty
-      applyChanges playStatus totalHungerChange totalThirstChange healthChange
+      applyChanges playStatus totalHungerChange totalThirstChange healthChange curDate
     Nothing -> return playStatus
 
-applyChanges :: PlayStatus -> Int -> Int -> Int -> IO PlayStatus
-applyChanges playStatus hungerChange thirstChange healthChange = do
+
+
+applyChanges :: PlayStatus -> Int -> Int -> Int -> Int -> IO PlayStatus
+applyChanges playStatus hungerChange thirstChange healthChange curDate= do
   newActivityMap <- liftIO assignActivitiesToKeys
+  newWeather <-  getRandomWeather
   let newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
       newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
-      newHealth = max 0 (min 100 (health playStatus + healthChange))
+      newHealth = max 0 (min 100 (calculateHealthChange (health playStatus) newHunger newThirst))
       newAlive = newHealth > 0
+      newDate = curDate + 1
+
+      
 
   return
     ( playStatus
@@ -81,6 +95,8 @@ applyChanges playStatus hungerChange thirstChange healthChange = do
           thirsty = newThirst,
           health = newHealth,
           alive = newAlive,
+          date = newDate,
+          weather = newWeather,
           activityMap = newActivityMap
         }
     )
