@@ -83,17 +83,12 @@ uiStartGame (StartGame st) =
                       , hCenter $ str $ " "
                       ], withBorderStyle unicode $ strWrap textArtResource], 
                       center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
-                      [
-                        str $ activityText (prevActivity st)           
+                      [ strWrap $ activityText (prevActivity st)
                       ]
                     ]  
                 ]
               ]
             ]
-        -- , center $ vLimit 20 $ borderWithLabel (str "Previous action:") $ padTop (Pad 1) $ vBox
-        --     [
-        --       str $ activityText (prevActivity st)           
-        --     ]
         , center $ vLimit 20 $ borderWithLabel (str "Select an action:") $ padTop (Pad 1) $ vBox
             [ str $ "w. " ++ (getDescription st 'W')
             , str $ "a. " ++ (getDescription st 'A')
