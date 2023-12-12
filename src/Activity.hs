@@ -102,15 +102,15 @@ activityText (Hunting SpearFishing) = "Stab a fish with your spear near the cora
 -- Resting
 activityText (Resting StarGazing) = "Look up at the sky and contemplate your survival..."
 activityText (Resting Meditating) = "Close your eyes and think..."
-activityText (Resting Daydreaming) = "Take some time to daydream what it feels like to be at home"
-activityText (Resting SunBathing) = "Absorb energy form sunbathing"
-activityText (Resting Yoga) = "Feeling Down? Do some Yoga"
-activityText (Resting Sleeping) = "Sleeping is always the most effective way to refill and recharge"
-activityText (Resting ListenToNature) = "Sit silently and listen to the sounds of nature"
-activityText (Resting SandCastleBuilding) = "Get on the beach and build a sand castle"
-activityText (Resting Planning) = "Lay down and plan your next days"
-activityText (Resting SandPainting) = "Paint a picture on the sand"
-activityText (Resting Grade) = "Calculate your CSE230 final grade"
+activityText (Resting Daydreaming) = "Take some time to daydream what it feels like to be at home."
+activityText (Resting SunBathing) = "Absorb energy form sunbathing."
+activityText (Resting Yoga) = "Feeling Down? Do some Yoga."
+activityText (Resting Sleeping) = "Sleeping is always the most effective way to refill and recharge."
+activityText (Resting ListenToNature) = "Sit silently and listen to the sounds of nature."
+activityText (Resting SandCastleBuilding) = "Get on the beach and build a sand castle."
+activityText (Resting Planning) = "Lay down and plan your next days."
+activityText (Resting SandPainting) = "Paint a picture on the sand."
+activityText (Resting Grade) = "Calculate your CSE230 final grade."
 -- Random
 activityText (Random BuildTent) = "Build a comfy tent."
 activityText (Random MakeFire) = "Make a fire to keep you warm."
@@ -120,7 +120,7 @@ activityText (Random WaterPurifying) = "Drinking purified water is the key to su
 activityText (Random FortuneTelling) = "Predict your future..."
 activityText (Random NightPatrolling) = "Make sure no threats on your survival territory."
 activityText (Random SignalingForHelp) = "Making a huge SOS should improve your chances to be rescued..."
-activityText (Random ExploreUnkonwn) = "Get out of your comfort zone and explore the wider nature"
+activityText (Random ExploreUnkonwn) = "Get out of your comfort zone and explore the wider nature."
 
 -- Default starting activity
 activityText NoActivity = "None yet. Pick an activity to start."
@@ -138,50 +138,50 @@ activityEffects (Foraging MushroomForaging) =
 activityEffects (Foraging FindWater) =
   generateRandomEffects (2, 4) (-3, 10) (-5, 5)
 activityEffects (Foraging HerbGathering) =
-  generateRandomEffects (2, 4) (5, 7) (-2, 5)
+  generateRandomEffects (2, 4) (5, 7) (-5, 5)
 activityEffects (Foraging NutCollecting) =
-  generateRandomEffects (2, 4) (-3, -1) (0, 5)
+  generateRandomEffects (2, 10) (-3, -1) (0, 5)
 activityEffects (Foraging RootDigging) =
-  generateRandomEffects (3, 7) (-1, 5) (0, 4)
+  generateRandomEffects (3, 10) (-1, 5) (0, 10)
 activityEffects (Foraging SeaweedGathering) =
-  generateRandomEffects (3, 7) (-5, -1) (0, 4)
+  generateRandomEffects (3, 10) (-5, -1) (0, 4)
 activityEffects (Foraging HoneyHunting) =
-  generateRandomEffects (3, 7) (-3, -1) (-10, 10)
+  generateRandomEffects (3, 10) (-3, -1) (-15, 10)
 activityEffects (Foraging FlowerForaging) =
-  generateRandomEffects (2, 4) (-3, 5) (-2, 4)
+  generateRandomEffects (2, 10) (-3, 5) (-2, 4)
 activityEffects (Foraging FruitTreeGleaning) =
-  generateRandomEffects (5, 10) (5, 10) (-2, 5)
+  generateRandomEffects (5, 15) (5, 10) (-2, 5)
 activityEffects (Foraging InsectGathering) =
   generateRandomEffects (2, 6) (-3, -1) (-3, 5)
 activityEffects (Foraging ShellfishGathering) =
-  generateRandomEffects (3, 7) (-3, -1) (0, 5)
+  generateRandomEffects (3, 10) (-3, -1) (0, 5)
 activityEffects (Foraging BirdeggForaging) =
-  generateRandomEffects (3, 7) (-3, -1) (3, 7)
+  generateRandomEffects (3, 10) (-3, -1) (3, 7)
 -- Hunting
 activityEffects (Hunting DeerHunting) =
-  generateRandomEffects (20, 30) (-15, 5) (-50, 50)
+  generateRandomEffects (20, 30) (-15, 5) (-50, 30)
 activityEffects (Hunting FishTrapping) =
-  generateRandomEffects (8, 12) (-10, -5) (0, 10)
+  generateRandomEffects (8, 12) (-10, -5) (-5, 10)
 activityEffects (Hunting BirdHunting) =
-  generateRandomEffects (10, 15) (-6, -4) (0, 10)
+  generateRandomEffects (10, 15) (-6, -4) (-5, 10)
 activityEffects (Hunting InsectCollecting) =
-  generateRandomEffects (3, 7) (-6, -4) (2, 10)
+  generateRandomEffects (3, 7) (-6, -4) (-10, 10)
 activityEffects (Hunting TrapSetting) =
-  generateRandomEffects (3, 20) (-6, -4) (0, 10)
+  generateRandomEffects (3, 20) (-6, -4) (-10, 10)
 activityEffects (Hunting BoarHunting) =
-  generateRandomEffects (20, 30) (-15, 5) (-50, 50)
+  generateRandomEffects (20, 30) (-15, 5) (-50, 20)
 activityEffects (Hunting DuckHunting) =
-  generateRandomEffects (8, 12) (-10, 5) (3, 10)
+  generateRandomEffects (10, 20) (-10, 5) (-4, 10)
 activityEffects (Hunting SeabirdHunting) =
-  generateRandomEffects (10, 15) (-10, 5) (3, 10)
+  generateRandomEffects (10, 15) (-10, 5) (-5, 10)
 activityEffects (Hunting RockThrowing) =
-  generateRandomEffects (6, 12) (-5, 5) (2, 8)
+  generateRandomEffects (6, 12) (-5, 5) (-8, 8)
 activityEffects (Hunting BlowpipeHunting) =
-  generateRandomEffects (5, 15) (-5, 5) (0, 10)
+  generateRandomEffects (5, 15) (-5, 5) (-5, 10)
 activityEffects (Hunting BowHunting) =
-  generateRandomEffects (5, 20) (-10, 5) (2, 10)
+  generateRandomEffects (5, 20) (-10, 5) (-5, 10)
 activityEffects (Hunting SpearFishing) =
-  generateRandomEffects (8, 12) (-6, -4) (2, 10)
+  generateRandomEffects (8, 12) (-6, -4) (-5, 10)
 -- Resting
 activityEffects (Resting StarGazing) =
   generateRandomEffects (-5, 0) (-5, 0) (5, 10)
@@ -204,7 +204,7 @@ activityEffects (Resting Planning) =
 activityEffects (Resting SandPainting) =
   generateRandomEffects (-10, 0) (-5, 0) (10, 20)
 activityEffects (Resting Grade) =
-  generateRandomEffects (-5, 0) (-5, 0) (-10, -5)
+  generateRandomEffects (-15, 0) (-5, 0) (-20, -5)
 -- Random
 activityEffects (Random BuildTent) =
   generateRandomEffects (-11, -9) (-11, -9) (5, 10)
