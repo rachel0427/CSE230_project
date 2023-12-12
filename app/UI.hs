@@ -11,6 +11,7 @@ import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
 import System.Random (randomRIO)
 import Control.Monad.IO.Class (liftIO)
+import Control.Concurrent (threadDelay)
 
 import Types
 import Game
@@ -58,24 +59,6 @@ ui =
         [ withAttr attrGreen $ str "Press 's' to start a new game."
         , withAttr attrRed $ str "Press 'q' to exit the game."
         ]
--- menuItemWidget :: String -> MenuItem -> Widget Name
--- menuItemWidget label item =
---     padAll 1 $
---         hCenter $
---             Core.clickable (show item) $
---                 withAttr (attrForItem item) $
---                     str label
-
--- attrForItem :: MenuItem -> AttrName
--- attrForItem NewGame = "menuItemNewGame"
--- attrForItem Exit = "menuItemExit"
-
--- -- Utility function to create clickable widgets
--- clickable :: Name -> Widget n -> Widget n
--- clickable name content = clickableWidget name content
-
--- clickableWidget :: Name -> Widget n -> Widget n
--- clickableWidget name = UI.clickable name ClickableNever
 
 ui2 :: Int -> Widget Name
 ui2 res = 
@@ -119,7 +102,8 @@ uiStartGame (StartGame st) =
                       , hCenter $ str $ " "
                       ], withBorderStyle unicode $ withAttr attrLilac $ strWrap characterResource], 
                       center $ vLimit 20 $ withAttr attrBlue $ borderWithLabel (str " Previous action ") $ padTop (Pad 1) $ vBox
-                      [ strWrap $ activityText (prevActivity st)
+                      [
+                        vBox [strWrap $ activityText (prevActivity st), hCenter $ str $ " "] 
                       ] 
                     ]  
                 ]
@@ -145,6 +129,10 @@ handleEvent Menu _ = continue Menu
 --   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'w') [])) = do
+  let choice ps = W
+  continue $ StartGame ps
+  liftIO $ threadDelay 500000
+  let choice ps = None
   newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
   if not (alive newPS)
   then continue $ EndGame 0
@@ -198,4 +186,5 @@ randomInitNewGame = do
                                 date = 1,
                                 alive = True,
                                 activityMap = randomMap,
-                                prevActivity = NoActivity }
+                                prevActivity = NoActivity,
+                                choice = None }

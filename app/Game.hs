@@ -65,7 +65,7 @@ calculateHealthChange health hunger thirst
 
 -- Function to update PlayStatus based on the user's input
 updatePlayStatusWithChar :: Char -> PlayStatus -> IO PlayStatus
-updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather curDate _ activityMap _) = do
+updatePlayStatusWithChar char playStatus@(PlayStatus _ _ _ curWeather curDate _ activityMap _ _) = do
   let (weatherHungerPenalty, weatherThirstPenalty) = weatherPenalty curWeather
   case M.lookup char activityMap of
     Just activity -> do
@@ -103,7 +103,7 @@ applyChanges playStatus hungerChange thirstChange healthChange curDate chosenAct
     )
 
 getDescription :: PlayStatus -> Char -> String
-getDescription (PlayStatus _ _ _ _ _ _ activityMap _) char =
+getDescription (PlayStatus _ _ _ _ _ _ activityMap _ _) char =
   case M.lookup char activityMap of
     Just activity -> activityText activity
     Nothing -> "No activity found for this key"
