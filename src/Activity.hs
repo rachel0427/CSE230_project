@@ -79,7 +79,7 @@ activityText (Foraging FindWater) = "Search for water, the source of life!"
 activityText (Foraging HerbGathering) = "Gather herbs from nearby forest. They may heal you!"
 activityText (Foraging NutCollecting) = "Collect nuts from nearby forest. Might anger the squirrels."
 activityText (Foraging RootDigging) = "Dig up edible roots."
-activityText (Foraging SeaweedGathering) = "Look for seaweed along the coast"
+activityText (Foraging SeaweedGathering) = "Look for seaweed along the coast."
 activityText (Foraging HoneyHunting) = "Search for delicious and nutritous honey. Look out for bees!"
 activityText (Foraging FlowerForaging) = "Find edible flowers. Might have healing properties."
 activityText (Foraging FruitTreeGleaning) = "Look for fruit trees. Shake em up!"
@@ -103,7 +103,7 @@ activityText (Hunting SpearFishing) = "Stab a fish with your spear near the cora
 activityText (Resting StarGazing) = "Look up at the sky and contemplate your survival..."
 activityText (Resting Meditating) = "Close your eyes and think..."
 activityText (Resting Daydreaming) = "Take some time to daydream what it feels like to be at home."
-activityText (Resting SunBathing) = "Absorb energy form sunbathing."
+activityText (Resting SunBathing) = "Absorb energy from sunbathing."
 activityText (Resting Yoga) = "Feeling Down? Do some Yoga."
 activityText (Resting Sleeping) = "Sleeping is always the most effective way to refill and recharge."
 activityText (Resting ListenToNature) = "Sit silently and listen to the sounds of nature."
@@ -184,27 +184,27 @@ activityEffects (Hunting SpearFishing) =
   generateRandomEffects (8, 12) (-6, -4) (-5, 10)
 -- Resting
 activityEffects (Resting StarGazing) =
-  generateRandomEffects (-5, 0) (-5, 0) (5, 10)
+  generateRandomEffects (-15, -5) (-10, -5) (5, 10)
 activityEffects (Resting Meditating) =
-  generateRandomEffects (-5, 0) (-5, 0) (5, 10)
+  generateRandomEffects (-15, -5) (-10, -5) (5, 10)
 activityEffects (Resting Daydreaming) =
-  generateRandomEffects (-10, 10) (-10, 10) (10, 15)
+  generateRandomEffects (-15, -5) (-10, -5) (5, 10)
 activityEffects (Resting SunBathing) =
-  generateRandomEffects (-5, 0) (-5, 0) (-5, 10)
+  generateRandomEffects (-15, -5) (-15, -5) (-5, 5)
 activityEffects (Resting Yoga) =
-  generateRandomEffects (-5, 0) (-5, 0) (0, 5)
+  generateRandomEffects (-15, -5) (-10, -5) (0, 5)
 activityEffects (Resting Sleeping) =
-  generateRandomEffects (-10, 0) (-5, 0) (10, 20)
+  generateRandomEffects (-10, 0) (-5, 0) (5, 10)
 activityEffects (Resting ListenToNature) =
-  generateRandomEffects (-5, 0) (-5, 0) (10, 20)
+  generateRandomEffects (-15, -5) (-10, -5) (0, 5)
 activityEffects (Resting SandCastleBuilding) =
-  generateRandomEffects (-10, 0) (-5, 0) (10, 20)
+  generateRandomEffects (-15, -5) (-10, -5) (5, 10)
 activityEffects (Resting Planning) =
-  generateRandomEffects (-5, 5) (-5, 0) (10, 20)
+  generateRandomEffects (-15, 0) (-10, -5) (5, 10)
 activityEffects (Resting SandPainting) =
-  generateRandomEffects (-10, 0) (-5, 0) (10, 20)
+  generateRandomEffects (-15, -5) (-10, -5) (5, 10)
 activityEffects (Resting Grade) =
-  generateRandomEffects (-15, 0) (-5, 0) (-20, -5)
+  generateRandomEffects (-20, -5) (-10, -5) (-20, -5)
 -- Random
 activityEffects (Random BuildTent) =
   generateRandomEffects (-11, -9) (-11, -9) (5, 10)
@@ -213,15 +213,15 @@ activityEffects (Random MakeFire) =
 activityEffects (Random MapMaking) =
   generateRandomEffects (-11, -9) (-11, -9) (5, 10)
 activityEffects (Random ShelterImproving) =
-  generateRandomEffects (-10, -4) (-6, -4) (5, 20)
+  generateRandomEffects (-10, -4) (-6, -4) (5, 10)
 activityEffects (Random WaterPurifying) =
-  generateRandomEffects (-5, -0) (-5, -0) (10, 15)
+  generateRandomEffects (-5, -0) (-1, 10) (0, 5)
 activityEffects (Random FortuneTelling) =
-  generateRandomEffects (-10, 10) (-5, -3) (1, 5)
+  generateRandomEffects (-10, -5) (-5, -3) (1, 5)
 activityEffects (Random NightPatrolling) =
-  generateRandomEffects (-10, 5) (-10, -5) (10, 15)
+  generateRandomEffects (-10, -5) (-10, -5) (5, 10)
 activityEffects (Random SignalingForHelp) =
-  generateRandomEffects (-20, 5) (-10, -10) (-20, 25)
+  generateRandomEffects (-20, -5) (-10, -10) (-20, 10)
 activityEffects (Random ExploreUnkonwn) =
   generateRandomEffects (-10, 10) (-10, 10) (-5, 5)
 

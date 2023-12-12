@@ -58,9 +58,9 @@ weatherPenalty Cloudy = (-10, -2) -- Assuming equal hunger and thirst change for
 -- Calculate health change based on hunger and thirst
 calculateHealthChange :: Int -> Int -> Int -> Int
 calculateHealthChange health hunger thirst
-  | hunger == 0 && thirst == 0 = health - 15
-  | hunger == 0 = health - 10
-  | thirst == 0 = health - 5
+  | hunger == 0 && thirst == 0 = health - 40
+  | hunger == 0 = health - 20
+  | thirst == 0 = health - 20
   | otherwise = health
 
 -- Function to update PlayStatus based on the user's input
@@ -83,7 +83,7 @@ applyChanges playStatus hungerChange thirstChange healthChange curDate chosenAct
   newWeather <-  getRandomWeather
   let newHunger = max 0 (min 100 (hunger playStatus + hungerChange))
       newThirst = max 0 (min 100 (thirsty playStatus + thirstChange))
-      newHealth = max 0 (min 100 (calculateHealthChange (health playStatus) newHunger newThirst + healthChange))
+      newHealth = max 0 (min 100 (healthChange + calculateHealthChange (health playStatus) newHunger newThirst)) 
       newAlive = newHealth > 0
       newDate = curDate + 1
 
