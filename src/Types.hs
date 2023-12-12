@@ -126,3 +126,5 @@ attrLilac :: AttrName
 attrLilac = attrName "lilac text"
 attrBold :: AttrName
 attrBold = attrName "bold lilac text"
+attrBoldW :: AttrName
+attrBoldW = attrName "bold white text"
