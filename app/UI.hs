@@ -35,7 +35,7 @@ app = App
     , appStartEvent   = return -- do nothing
     , appAttrMap = const $ attrMap (bg oliveGreen) 
                     [ (attrBlue, fg cerulean), (attrGreen, fg yellowGreen), (attrWhite, fg offWhite), (attrRed, fg red)
-                    , (attrLilac, fg lilac)]
+                    , (attrLilac, fg lilac), (attrBold, withStyle (fg lilac) bold) ]
     -- const $ attrMap Graphics.Vty.defAttr
     }
 
@@ -110,7 +110,9 @@ uiStartGame (StartGame st) =
         [ hBox -- Use hBox to horizontally concatenate widgets
             [ vBox [str (" Weather: " ++ show (weather st))
               , hBox
-                [str "  ", weatherWidget, vBox [center $ vLimit 20 $ withAttr attrGreen $ borderWithLabel (str " Character Status ") $ padTop (Pad 1) $ hBox [vBox
+                [str "  ", 
+                vBox [weatherWidget, islandWidget], 
+                vBox [center $ vLimit 20 $ withAttr attrGreen $ borderWithLabel (str " Character Status ") $ padTop (Pad 1) $ hBox [vBox
                       [ hCenter $ str $ "Health: " ++ show (health st)
                       , hCenter $ str $ "Hunger: " ++ show (hunger st)
                       , hCenter $ str $ "Thirsty: " ++ show (thirsty st)
@@ -123,11 +125,11 @@ uiStartGame (StartGame st) =
                 ]
               ]
             ]
-        , center $ vLimit 20 $ withAttr attrLilac $ borderWithLabel (str " Select an action: ") $ padTop (Pad 1) $ vBox
-            [ str $ "w. " ++ (getDescription st 'W')
-            , str $ "a. " ++ (getDescription st 'A')
-            , str $ "s. " ++ (getDescription st 'S')
-            , str $ "d. " ++ (getDescription st 'D')
+        , center $ vLimit 20 $ withAttr attrBold $ borderWithLabel (str " Select an action: ") $ padTop (Pad 1) $ vBox
+            [ str $ " [w] " ++ (getDescription st 'W')
+            , str $ " [a] " ++ (getDescription st 'A')
+            , str $ " [s] " ++ (getDescription st 'S')
+            , str $ " [d] " ++ (getDescription st 'D')
             , hCenter $ str $ " "
             ]
         , withAttr attrRed $ str "Press 'q' to return to main menu."
