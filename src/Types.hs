@@ -4,7 +4,8 @@ import Data.Map as M
 import Activity
 import Graphics.Vty
 
--- Define the weather data type
+data Choice = W | A | S | D | None deriving (Show, Eq)
+
 data Weather = Sunny | Rainy | Cloudy deriving (Show, Eq)
 
 type Res = Int
@@ -18,6 +19,7 @@ data PlayStatus = PlayStatus
                     , alive :: Bool
                     , activityMap :: M.Map Char Activity
                     , prevActivity :: Activity
+                    , choice :: Choice
                     } deriving (Show, Eq)
 
 data Option = Option 
