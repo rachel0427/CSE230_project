@@ -10,6 +10,16 @@
   (major1) == 0 && (major2) <  1 || \
   (major1) == 0 && (major2) == 1 && (minor) <= 0)
 #endif /* MIN_VERSION_survival_game */
+/* package QuickCheck-2.14.2 */
+#ifndef VERSION_QuickCheck
+#define VERSION_QuickCheck "2.14.2"
+#endif /* VERSION_QuickCheck */
+#ifndef MIN_VERSION_QuickCheck
+#define MIN_VERSION_QuickCheck(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  14 || \
+  (major1) == 2 && (major2) == 14 && (minor) <= 2)
+#endif /* MIN_VERSION_QuickCheck */
 /* package base-4.16.4.0 */
 #ifndef VERSION_base
 #define VERSION_base "4.16.4.0"
@@ -163,7 +173,7 @@
 #endif /* MIN_TOOL_VERSION_strip */
 
 #ifndef CURRENT_COMPONENT_ID
-#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-HsqSwlZejvdH8bnBA7KNB3-survival-game"
+#define CURRENT_COMPONENT_ID "survival-game-0.1.0.0-23Dgy6so9GvAUAfwU6MDWJ-survival-game"
 #endif /* CURRENT_COMPONENT_ID */
 #ifndef CURRENT_PACKAGE_VERSION
 #define CURRENT_PACKAGE_VERSION "0.1.0.0"
