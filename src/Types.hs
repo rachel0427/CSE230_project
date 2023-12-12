@@ -85,6 +85,20 @@ fixArtWidget = ArtW { sunnyW = vBox [withAttr attrRed $ str $ "       \\ \\ | / 
                           hCenter $ str $ " "]
 }
 
+islandWidget :: Widget ()
+islandWidget = vBox [ withAttr attrGreen $ str "        _ ^ _",
+                      withAttr attrGreen $ str "       '_\\V/ `",
+                      hBox [withAttr attrGreen $ str "       '  ", withAttr attrLilac $ str "X", withAttr attrGreen $ str "`"],
+                      withAttr attrLilac $ str "          X",
+                      withAttr attrLilac $ str "          X             -HELP!",
+                      withAttr attrLilac $ str "          X",
+                      hBox [withAttr attrLilac $ str "          X        ", withAttr attrRed $ str "\\O/"],
+                      hBox [withAttr attrLilac $ str "          X", withAttr attrGreen $ str ".a##a.   ", withAttr attrRed $ str "M"],
+                      hBox [withAttr attrGreen $ str "       .aa########a.", withAttr attrRed $ str ">>"],
+                      withAttr attrGreen $ str "    .a################aa.",
+                      withAttr attrBlue $ str "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                      hCenter $ str $ " "]
+
 
 -- Colors
 oliveGreen :: Color
@@ -108,3 +122,5 @@ attrWhite :: AttrName
 attrWhite = attrName "white text"
 attrLilac :: AttrName
 attrLilac = attrName "lilac text"
+attrBold :: AttrName
+attrBold = attrName "bold lilac text"
