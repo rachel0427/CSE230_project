@@ -67,23 +67,26 @@ data ArtWidget = ArtW {
                   , rainyW :: Widget ()
                   , cloudyW :: Widget ()
                 }
-fixArtWidget = ArtW { sunnyW = vBox [withAttr attrRed $ str $ "       \\ \\ | / /       \n",
+fixArtWidget = ArtW { sunnyW = vBox [hCenter $ str $ " ", 
+                                withAttr attrRed $ str $ "       \\ \\ | / /       \n",
                                 withAttr attrRed $ str $ "         .-'-.         \n",
                                 hBox [withAttr attrBlue $ str $ "  _ --_ ", withAttr attrRed $ str $ "/     \\" ,withAttr attrBlue $ str $ " _--_ __ \n"],
                                 withAttr attrBlue $ str $ "=_=-_= -=======- = =-=_\n",
                                 withAttr attrBlue $ str $ " _=-= _--=====- _=-=_-_\n",
                                 hCenter $ str $ " " ],
-                      rainyW = vBox [withAttr attrWhite $ str "   __   _\n",
-                          withAttr attrWhite $ str " _(  )_( )_\n",
-                          withAttr attrWhite $ str "(_   _    _)\n",
-                          hBox [withAttr attrBlue $ str "/ /", withAttr attrWhite $ str "(_) (__)\n"],
-                          withAttr attrBlue $ str "/ / / / / /\n",
-                          withAttr attrBlue $ str "/ / / / / /",
+                      rainyW = vBox [withAttr attrWhite $ str "       __   _\n",
+                          withAttr attrWhite $ str "     _(  )_( )_\n",
+                          withAttr attrWhite $ str "    (_   _    _)\n",
+                          hBox [withAttr attrBlue $ str "    / ", withAttr attrWhite $ str "(_) (__)\n"],
+                          withAttr attrBlue $ str "    / / / / / /\n",
+                          withAttr attrBlue $ str "    / / / / / /",
                           hCenter $ str $ " "],
-                      cloudyW = vBox [withAttr attrWhite $ str "   __   _\n",
-                          withAttr attrWhite $ str " _(  )_( )_\n",
-                          withAttr attrWhite $ str "(_   _    _)\n",
-                          withAttr attrWhite $ str "  (_) (__)\n",
+                      cloudyW = vBox [withAttr attrWhite $ str "       __   _\n",
+                          withAttr attrWhite $ str "     _(  )_( )_\n",
+                          withAttr attrWhite $ str "    (_   _    _)\n",
+                          withAttr attrWhite $ str "      (_) (__)\n",
+                          hCenter $ str $ " ", 
+                          hCenter $ str $ " ", 
                           hCenter $ str $ " "]
 }
 
