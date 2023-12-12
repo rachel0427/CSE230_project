@@ -6,7 +6,7 @@ import Brick.Widgets.Center (center, hCenter)
 import Brick.Widgets.Border (border, borderWithLabel, borderAttr)
 import Brick.Widgets.Border.Style (unicode, unicodeBold)
 import qualified Brick.Widgets.Core as Core
-import Control.Monad (void)
+import Control.Monad (void, when)
 import Graphics.Vty
 import Graphics.Vty.Input.Events (Key (KChar), Event (EvKey))
 import System.Random (randomRIO)
@@ -36,7 +36,7 @@ app = App
     , appStartEvent   = return -- do nothing
     , appAttrMap = const $ attrMap (bg oliveGreen) 
                     [ (attrBlue, fg cerulean), (attrGreen, fg yellowGreen), (attrWhite, fg offWhite), (attrRed, fg red)
-                    , (attrLilac, fg lilac), (attrBold, withStyle (fg lilac) bold) ]
+                    , (attrLilac, fg lilac), (attrBold, withStyle (fg lilac) bold), (attrBoldW, withStyle (fg offWhite) bold) ]
     -- const $ attrMap Graphics.Vty.defAttr
     }
 
@@ -109,11 +109,11 @@ uiStartGame (StartGame st) =
                 ]
               ]
             ]
-        , center $ vLimit 20 $ withAttr attrBold $ borderWithLabel (str " Select an action: ") $ padTop (Pad 1) $ vBox
-            [ str $ " [w] " ++ (getDescription st 'W')
-            , str $ " [a] " ++ (getDescription st 'A')
-            , str $ " [s] " ++ (getDescription st 'S')
-            , str $ " [d] " ++ (getDescription st 'D')
+        , center $ vLimit 20 $ withAttr attrBold $ borderWithLabel (str " Select an action (Press enter to confirm): ") $ padTop (Pad 1) $ vBox
+            [ if choice st == W then withAttr attrBoldW $ str $ " [w] " ++ (getDescription st 'W') else withAttr attrBold $ str $ " [w] " ++ (getDescription st 'W')
+            , if choice st == A then withAttr attrBoldW $ str $ " [a] " ++ (getDescription st 'A') else withAttr attrBold $ str $ " [a] " ++ (getDescription st 'A')
+            , if choice st == S then withAttr attrBoldW $ str $ " [s] " ++ (getDescription st 'S') else withAttr attrBold $ str $ " [s] " ++ (getDescription st 'S')
+            , if choice st == D then withAttr attrBoldW $ str $ " [d] " ++ (getDescription st 'D') else withAttr attrBold $ str $ " [d] " ++ (getDescription st 'D')
             , hCenter $ str $ " "
             ]
         , withAttr attrRed $ str "Press 'q' to return to main menu."
@@ -129,40 +129,56 @@ handleEvent Menu _ = continue Menu
 --   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'w') [])) = do
-  let choice ps = W
-  continue $ StartGame ps
-  liftIO $ threadDelay 500000
-  let choice ps = None
-  newPS <- liftIO $ updatePlayStatusWithChar 'W' ps
-  if not (alive newPS)
-  then continue $ EndGame 0
-  else if date newPS >= dateLimit
-  then continue $ EndGame 1
-  else continue $ StartGame newPS
+  let updatedPS = ps { choice = W}
+  continue (StartGame updatedPS) 
   
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'a') [])) = do
-  newPS <- liftIO $ updatePlayStatusWithChar 'A' ps
-  if not (alive newPS)
-  then continue $ EndGame 0
-  else if date newPS >= dateLimit
-  then continue $ EndGame 1
-  else continue $ StartGame newPS
+  let updatedPS = ps { choice = A}
+  continue (StartGame updatedPS) 
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 's') [])) = do
-  newPS <- liftIO $ updatePlayStatusWithChar 'S' ps
-  if not (alive newPS)
-  then continue $ EndGame 0
-  else if date newPS >= dateLimit
-  then continue $ EndGame 1
-  else continue $ StartGame newPS
+  let updatedPS = ps { choice = S}
+  continue (StartGame updatedPS) 
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'd') [])) = do
-  newPS <- liftIO $ updatePlayStatusWithChar 'D' ps
-  if not (alive newPS)
-  then continue $ EndGame 0
-  else if date newPS >= dateLimit
-  then continue $ EndGame 1
-  else continue $ StartGame newPS
+  let updatedPS = ps { choice = D}
+  continue (StartGame updatedPS) 
+
+handleEvent (StartGame ps) (VtyEvent (EvKey KEnter [])) = do
+  if choice ps == W then do
+    let ps' = ps {choice = None} 
+    newPS <- liftIO $ updatePlayStatusWithChar 'W' ps'
+    if not (alive newPS)
+    then continue $ EndGame 0
+    else if date newPS >= dateLimit
+    then continue $ EndGame 1
+    else continue $ StartGame newPS
+  else if choice ps == A then do
+    let ps' = ps {choice = None} 
+    newPS <- liftIO $ updatePlayStatusWithChar 'A' ps'
+    if not (alive newPS)
+    then continue $ EndGame 0
+    else if date newPS >= dateLimit
+    then continue $ EndGame 1
+    else continue $ StartGame newPS
+  else if choice ps == S then do
+    let ps' = ps {choice = None} 
+    newPS <- liftIO $ updatePlayStatusWithChar 'S' ps'
+    if not (alive newPS)
+    then continue $ EndGame 0
+    else if date newPS >= dateLimit
+    then continue $ EndGame 1
+    else continue $ StartGame newPS
+  else if choice ps == D then do
+    let ps' = ps {choice = None} 
+    newPS <- liftIO $ updatePlayStatusWithChar 'D' ps'
+    if not (alive newPS)
+    then continue $ EndGame 0
+    else if date newPS >= dateLimit
+    then continue $ EndGame 1
+    else continue $ StartGame newPS
+  else continue (StartGame ps)
+
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'q') [])) = continue Menu
 handleEvent st@(StartGame ps) _ = continue st
