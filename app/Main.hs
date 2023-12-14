@@ -18,11 +18,6 @@ import UI
 -- | The main function to run the Brick application
 main :: IO ()
 main = do
-  let initialState = UI.Menu -- Replace with your actual initial state
+  let initialState = UI.Menu
   endState <- defaultMain UI.app initialState
-  putStrLn "Game over!" -- You can replace this with any post-game logic or message
-  -- main :: IO ()
-  -- -- main = do
-  -- --     -- Create the Brick app
-  -- --     -- _ <- defaultMain UI.app UI.initialUIState
-  -- --     _ <- defaultMain UI.app UI.Menu
+  putStrLn "Game over!"

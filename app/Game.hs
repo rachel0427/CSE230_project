@@ -17,16 +17,6 @@ getRandomWeather = do
     3 -> return Cloudy
     _ -> error "Unexpected random number"
 
--- Update play status based on the chosen activity effects
--- updatePlayStatus :: PlayStatus -> Activity -> IO PlayStatus
--- updatePlayStatus gs activity = do
---   (hungerChange, thirstChange, healthChange) <- activityEffects activity
---   let newHunger = max 0 (min 100 (hunger gs + hungerChange))
---   let newThirst = max 0 (min 100 (thirsty gs + thirstChange))
---   let newHealth = max 0 (min 100 (health gs + healthChange))
---   let newAlive = newHealth > 0
---   return gs {hunger = newHunger, thirsty = newThirst, health = newHealth, alive = newAlive}
-
 -- Check whether player is still alive
 checkAlive :: PlayStatus -> PlayStatus
 checkAlive gs =
@@ -52,8 +42,8 @@ assignActivitiesToKeys = do
 -- Calculate the weather-based penalty (Hunger, Thirst)
 weatherPenalty :: Weather -> (Int, Int)
 weatherPenalty Sunny = (-7, -7)
-weatherPenalty Rainy = (-5, 5) -- Assuming no thirst change for Rainy
-weatherPenalty Cloudy = (-10, -2) -- Assuming equal hunger and thirst change for Stormy
+weatherPenalty Rainy = (-5, 5)
+weatherPenalty Cloudy = (-10, -2)
 
 -- Calculate health change based on hunger and thirst
 calculateHealthChange :: Int -> Int -> Int -> Int

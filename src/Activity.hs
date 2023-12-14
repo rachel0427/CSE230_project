@@ -57,7 +57,7 @@ data RandomActivity
   | WaterPurifying
   | FortuneTelling
   | NightPatrolling
-  | SignalingForHelp -- TODO: early stopping the game
+  | SignalingForHelp
   | ExploreUnkonwn
   deriving (Show, Eq)
 

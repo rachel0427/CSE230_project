@@ -9,8 +9,6 @@ import Game
 
 import Test.QuickCheck
 
--- Assuming the definition of Activity from your module
--- ...
 
 instance Arbitrary Activity where
   arbitrary = oneof [ foragingArb
@@ -66,12 +64,10 @@ instance Arbitrary Activity where
                                 Random WaterPurifying,
                                 Random FortuneTelling,
                                 Random NightPatrolling,
-                                Random SignalingForHelp, -- TODO: early stopping, the game
+                                Random SignalingForHelp,
                                 Random ExploreUnkonwn
 
                            ]
-
--- Now you can use quickCheck on properties involving Activity
 
 
 prop_activityEffectsRange :: Activity -> Property
@@ -80,9 +76,7 @@ prop_activityEffectsRange activity = monadicIO $ do
   assert (inRange hungerChange && inRange thirstChange && inRange healthChange)
   where
     inRange value = value >= minBound && value <= maxBound
-    -- Define minBound and maxBound based on the expected range for each activity
-
--- In your test suite
+    
 -- >>> quickCheck prop_activityEffectsRange
 -- +++ OK, passed 100 tests.
 --
@@ -107,7 +101,7 @@ prop_getRandomForagingActivity = monadicIO $ do
                             , BirdeggForaging
                             ]
 
--- In your test suite
+
 -- >>> quickCheck prop_getRandomForagingActivity
 -- +++ OK, passed 100 tests.
 
@@ -117,7 +111,7 @@ prop_getRandomWeather = monadicIO $ do
     weather <- run getRandomWeather
     assert $ weather `elem` [Sunny, Rainy, Cloudy]
 
--- In your test suite
+
 -- >>> quickCheck prop_getRandomWeather
 -- +++ OK, passed 100 tests.
 --
@@ -126,7 +120,7 @@ prop_checkAlive :: Int -> Bool
 prop_checkAlive health =
     alive (checkAlive (PlayStatus 0 0 health Sunny 0 True M.empty NoActivity)) == (health >= 0)
 
--- In your test suite
+
 -- >>> quickCheck prop_checkAlive
 -- +++ OK, passed 100 tests.
 
