@@ -37,7 +37,6 @@ app = App
     , appAttrMap = const $ attrMap (bg oliveGreen) 
                     [ (attrBlue, fg cerulean), (attrGreen, fg yellowGreen), (attrWhite, fg offWhite), (attrRed, fg red)
                     , (attrLilac, fg lilac), (attrBold, withStyle (fg lilac) bold), (attrBoldW, withStyle (fg offWhite) bold) ]
-    -- const $ attrMap Graphics.Vty.defAttr
     }
 
 initNewGame :: IO UIState
@@ -125,8 +124,6 @@ handleEvent :: UIState -> BrickEvent Name CustomEvent -> EventM Name (Next UISta
 handleEvent Menu (VtyEvent (EvKey (KChar 's') [])) = liftIO initNewGame >>= continue
 handleEvent Menu (VtyEvent (EvKey (KChar 'q') [])) = halt Menu
 handleEvent Menu _ = continue Menu
--- handleEvent (StartGame ps@(PlayStatus hunger thirsty health weather date alive aM)) (VtyEvent (EvKey (KChar 'a') [])) =
---   continue $ StartGame $ PlayStatus (max 0 (hunger - 10)) (max 0 (thirsty - 10)) health weather (date+1) alive aM
 
 handleEvent (StartGame ps) (VtyEvent (EvKey (KChar 'w') [])) = do
   let updatedPS = ps { choice = W}
@@ -189,10 +186,6 @@ handleEvent (EndGame res) _ = continue $ EndGame res
 -- random generate initial state
 randomInitNewGame :: IO UIState
 randomInitNewGame = do
---   let initialHealth = 100
---   let initialDate = 1
---   let initialHunger = 0
---   let initialThirst = 0
   randomWeather <- getRandomWeather
   randomMap <- assignActivitiesToKeys
   return $ StartGame PlayStatus { hunger = 100, 
