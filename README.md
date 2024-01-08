@@ -1,13 +1,20 @@
 # CSE230 Final Project
 #### Group Members: Ruoqi(Rachel) Yang, Ruichun Yang, Angela Chen, Maggie Zhao
 
+Welcome to Lambda Island, a survival game. You are stranded, and your goal is to survive for 20 days so that you can be rescued.
+
+Here is a video demo of our game:
+
+
+https://github.com/rachel0427/CSE230_project/assets/42723603/f5cfa1ff-61ba-49ed-8d5e-067c2c2837eb
+
+
+
 ### How to execute the program
 Since we have written a Makefile, you can build and execute the program with 
 ```
 $ make
 ```
-
-Welcome to Lambda Island, a survival game. You are stranded, and your goal is to survive for 20 days so that you can be rescued.
 
 ### Rules of the game:
 The Time System: Each day has 5 time blocks that the player can use to allocate activities. The player will be provided with a range of activities (randomly generated from a wide variety of predefined activities) to choose from. Some activities may have probabilistic outcomes.
